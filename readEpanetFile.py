@@ -7,123 +7,99 @@ def LoadFile(inp):
     mm = []
     inpname = inp
 
-
 def BinUpdateClass():
     global mm
     mm = getBinInfo()
     return mm
-
 
 # get Info
 def getBinNodeReservoirIndex():
     ind = range(getBinNodeJunctionCount() + 1, getBinNodeJunctionCount() + getBinNodeReservoirCount() + 1)
     return ind
 
-
 def getBinNodeTankIndex():
     ind = range(getBinNodeJunctionCount() + getBinNodeReservoirCount() + 1, getBinNodeCount() + 1)
     return ind
-
 
 def getBinNodeDemandPatternID():
     global mm
     return mm[3]
 
-
 def getBinNodeJunctionCount():
     global mm
     return mm[4]
-
 
 def getBinNodeReservoirCount():
     global mm
     return mm[7]
 
-
 def getBinNodeIndex(id):
     node_name_i_d = getBinNodeNameID()
     return node_name_i_d.index(id)
-
 
 def getBinNodeNameID():
     global mm
     return mm[0] + mm[5] + mm[8]
 
-
 def getBinNodeJunctionNameID():
     global mm
     return mm[0]
-
 
 def getBinReservoirNameID():
     global mm
     return mm[5]
 
-
 def getBinNodeJunctionElevations():
     global mm
     return mm[1]
-
 
 def getBinNodeReservoirElevations():
     global mm
     return mm[6]
 
-
 def getBinNodeBaseDemands():
     global mm
     return mm[2]
 
-
 def getBinNodeBaseDemandsDemSection():
     global mm
     return mm[62], mm[63], mm[64]  # nodeJunctionsDemSection, nodeJunctionsIDDemSection, nodeJunctionsPatDemSection
-
 
 # Tanks Info
 def getBinNodeTankNameID():
     global mm
     return mm[8]
 
-
 def getBinNodeTankCount():
     return len(getBinNodeTankNameID())
-
 
 def getBinNodeTankElevations():
     global mm
     return mm[9]
 
-
 def getBinNodeTankInitialLevel():
     global mm
     return mm[10]
-
 
 def getBinNodeTankMinimumWaterLevel():
     global mm
     return mm[11]
 
-
 def getBinNodeTankMaximumWaterLevel():
     global mm
     return mm[12]
-
 
 def getBinNodeTankDiameter():
     global mm
     return mm[13]
 
-
 def getBinNodeTankMinimumWaterVolume():
     global mm
     return mm[14]
 
-
 def getBinNodeTankVolumeCurveID():
     global mm
     return mm[35]
-
 
 # Get Links Info
 def getBinLinkPumpIndex():
@@ -132,30 +108,25 @@ def getBinLinkPumpIndex():
         ind.append(i - 1)
     return ind
 
-
 def getBinLinkValveIndex():
     ind = []
     for i in range(getBinLinkPipeCount() + getBinLinkPumpCount() + 1, getBinLinkCount() + 1):
         ind.append(i - 1)
     return ind
 
-
 def getBinLinkIndex(id):
     linkNameID = getBinLinkNameID()
     return linkNameID.index(id)
 
-
 def getBinLinkNameID():
     global mm
     return mm[15] + mm[22] + mm[27]
-
 
 def getBinLinkLength():
     ll = getBinLinkPipeLengths()
     for i in range(getBinLinkPipeCount() + 1, getBinLinkCount() + 1):
         ll.append(0)
     return ll
-
 
 def getBinLinkDiameter():
     ll = getBinLinkPipeDiameters()
@@ -166,13 +137,11 @@ def getBinLinkDiameter():
         ll.append(vld[i])
     return ll
 
-
 def getBinLinkRoughnessCoeff():
     ll = getBinLinkPipeRoughness()
     for i in range(getBinLinkPipeCount() + 1, getBinLinkCount() + 1):
         ll.append(0)
     return ll
-
 
 def getBinLinkMinorLossCoeff():
     ll = getBinLinkPipeMinorLoss()
@@ -183,110 +152,87 @@ def getBinLinkMinorLossCoeff():
         ll.append(vld[i])
     return ll
 
-
 def getBinLinkPipeCount():
     return len(getBinLinkPipeNameID())
-
 
 def getBinLinkPipeNameID():
     global mm
     return mm[15]
 
-
 def getBinLinkFromNode():
     global mm
     return mm[16]
-
 
 def getBinLinkToNode():
     global mm
     return mm[17]
 
-
 def getBinLinkPipeLengths():
     global mm
     return mm[18]
-
 
 def getBinLinkPipeDiameters():
     global mm
     return mm[19]
 
-
 def getBinLinkPipeRoughness():
     global mm
     return mm[20]
-
 
 def getBinLinkPipeMinorLoss():
     global mm
     return mm[21]
 
-
 # Get Pumps Info
 def getBinLinkPumpCount():
     return len(getBinLinkPumpNameID())
-
 
 def getBinLinkPumpNameID():
     global mm
     return mm[22]
 
-
 def getBinLinkPumpPatterns():
     global mm
     return mm[23]
-
 
 def getBinLinkPumpCurveNameID():
     global mm
     return mm[24]
 
-
 def getBinLinkPumpPower():
     global mm
     return mm[25]
-
 
 def getBinLinkPumpNameIDPower():
     global mm
     return mm[26]
 
-
 def getBinLinkPumpSpeed():
     global mm
     return mm[38]
-
 
 def getBinLinkPumpPatternsPumpID():
     global mm
     return mm[39]
 
-
-
 def getBinLinkValveCount():
     return len(getBinLinkValveNameID())
-
 
 def getBinLinkValveNameID():
     global mm
     return mm[27]
 
-
 def getBinLinkValveDiameters():
     global mm
     return mm[28]
-
 
 def getBinLinkValveType():
     global mm
     return mm[29]
 
-
 def getBinLinkValveSetting():
     global mm
     return mm[30]
-
 
 def getBinLinkValveMinorLoss():
     global mm
@@ -296,10 +242,8 @@ def getBinLinkValveDescription():
     global mm
     return mm[66]
 
-
 def getBinNodesConnectingLinksID():
     return [mm[16], mm[17]]
-
 
 def getBinNodesConnectingLinksIndex():
     NodesConnectingLinksID = getBinNodesConnectingLinksID()
@@ -308,126 +252,101 @@ def getBinNodesConnectingLinksIndex():
         nodeInd.append([getBinNodeIndex(NodesConnectingLinksID[0][i]), getBinNodeIndex(NodesConnectingLinksID[1][i])])
     return nodeInd
 
-
 def getBinLinkCount():
     return getBinLinkPipeCount() + getBinLinkPumpCount() + getBinLinkValveCount()
 
-
 def getBinNodeCount():
     return getBinNodeJunctionCount() + getBinNodeReservoirCount() + getBinNodeTankCount()
-
 
 # Status
 def getBinLinkInitialStatus():
     global mm
     return mm[32]
 
-
 def getBinLinkInitialStatusNameID():
     global mm
     return mm[33]
-
 
 # Curves
 def getBinCurvesNameID():
     global mm
     return mm[36]
 
-
 def getBinCurvesXY():
     global mm
     return mm[37]
-
 
 def getBinCurveCount():
     global mm
     return len(set(mm[36]))
 
-
 def getDemandsSection():
     global mm
     return mm[44]
-
 
 def getStatusSection():
     global mm
     return mm[45]
 
-
 def getEmittersSection():
     global mm
     return mm[46]
-
 
 def getControlsSection():
     global mm
     return mm[47]
 
-
 def getPatternsSection():
     global mm
     return mm[48]
-
 
 def getCurvesSection():
     global mm
     return mm[49], mm[50]
 
-
 def getQualitySection():
     global mm
     return mm[51]
-
 
 def getRulesSection():
     global mm
     return mm[52]
 
-
 def getSourcesSection():
     global mm
     return mm[53]
-
 
 def getEnergySection():
     global mm
     return mm[54]
 
-
 def getReactionsSection():
     global mm
     return mm[55]
-
 
 def getReactionsOptionsSection():
     global mm
     return mm[56]
 
-
 def getMixingSection():
     global mm
     return mm[57]
-
 
 def getTimesSection():
     global mm
     return mm[58]
 
-
 def getOptionsSection():
     global mm
     return mm[59]
-
 
 def getReportSection():
     global mm
     return mm[60]
 
-
 def getLabelsSection():
     global mm
     return mm[61]
-
 
 # Get all info
 def getBinInfo():
