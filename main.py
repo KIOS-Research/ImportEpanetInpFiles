@@ -244,7 +244,7 @@ class ImpEpanet(object):
                                                                        str(locals()['sectvalves'][i]['Diameter']),
                                                                        locals()['sectvalves'][i]['Type'],
                                                                        str(locals()['sectvalves'][i]['Setting']),
-                                                                       str(locals()['sectvalves'][i]['MinorLoss'])))
+                                                                       str(locals()['sectvalves'][i]['MinorLoss']),locals()['sectvalves'][i]['Description']))
 
         f.write('\n[DEMANDS]\n')
         for i in range(len(locals()['sectjunctions'])):

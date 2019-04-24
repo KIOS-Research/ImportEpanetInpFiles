@@ -637,18 +637,20 @@ def epa2gis(inpname):
     posValve = QgsVectorLayer("LineString?crs=EPSG:4326", "Valve", "memory")
     prValve = posValve.dataProvider()
 
-    fields = ["ID", "NodeFrom", "NodeTo", "Diameter", "Type", "Setting", "MinorLoss"]
-    fieldsCode = [0, 0, 0, 1, 0, 1, 1]
+    fields = ["ID", "NodeFrom", "NodeTo", "Diameter", "Type", "Setting", "MinorLoss", "Description"]
+    fieldsCode = [0, 0, 0, 1, 0, 1, 1, 0]
     createColumnsAttrb(prValve, fields, fieldsCode)
     posValve.startEditing()
 
     if d.getBinLinkValveCount() > 0:
+
 
         linkID = d.getBinLinkValveNameID()
         linkType = d.getBinLinkValveType()  # valve type
         linkDiameter = d.getBinLinkValveDiameters()
         linkInitSett = d.getBinLinkValveSetting()  # BinLinkValveSetting
         linkMinorloss = d.getBinLinkValveMinorLoss()
+        linkDescription = d.getBinLinkValveDescription()
 
         for i, p in enumerate(d.getBinLinkValveIndex()):
             try:

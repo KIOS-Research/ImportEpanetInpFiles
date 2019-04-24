@@ -263,7 +263,7 @@ def getBinLinkPumpPatternsPumpID():
     return mm[39]
 
 
-# Get Valves Info
+
 def getBinLinkValveCount():
     return len(getBinLinkValveNameID())
 
@@ -291,6 +291,10 @@ def getBinLinkValveSetting():
 def getBinLinkValveMinorLoss():
     global mm
     return mm[31]
+
+def getBinLinkValveDescription():
+    global mm
+    return mm[66]
 
 
 def getBinNodesConnectingLinksID():
@@ -467,11 +471,13 @@ def getBinInfo():
     BinLinkPumpSpeed = []
     BinLinkPumpPatternsPumpID = []
 
+
     BinLinkValveNameID = []
     BinLinkValveDiameters = []
     BinLinkValveType = []
     BinLinkValveSetting = []
     BinLinkValveMinorLoss = []
+    BinLinkValveDescription = []
 
     BinLinkInitialStatus = []
     BinLinkInitialStatusNameID = []
@@ -545,7 +551,8 @@ def getBinInfo():
                     qualitySection, rulesSection, sourcesSection, energySection, reactionsSection,
                     reactionsOptionSection, mixingSection,  # 51#52#53#54#55#56#57
                     timesSection, optionsSection, reportSection, labelsSection,  # 58#59#60#61
-                    nodeJunctionsDemSection, nodeJunctionsIDDemSection, nodeJunctionsPatDemSection, nodewithCoords]  # 62#63#64#65
+                    nodeJunctionsDemSection, nodeJunctionsIDDemSection, nodeJunctionsPatDemSection, nodewithCoords,BinLinkValveDescription]  # 62#63#64#65#66
+
 
         elif "[JUNCTIONS]" in s1:
             sec[0] = 1
@@ -796,9 +803,10 @@ def getBinInfo():
                     BinLinkValveDiameters.append(float(mm[3]))
                     BinLinkValveType.append(mm[4])
                     BinLinkValveSetting.append(float(mm[5]))
-                    if len(mm) > 6:
-                        if mm[6][0] != ';':
-                            BinLinkValveMinorLoss.append(float(mm[6]))
+                    BinLinkValveMinorLoss.append(float(mm[6]))
+                    if len(mm) > 7:
+                        if mm[7][0] != ';':
+                            BinLinkValveDescription.append(mm[7])
 
         if sec[6] == 1:  # PATTERNS
             if "[" in s1:
@@ -900,6 +908,7 @@ def getBinInfo():
                     linkIndex = linknameid.index(mm[0])
                     vertx[linkIndex].append(float(mm[1]))
                     verty[linkIndex].append(float(mm[2]))
+
 
         if sec2[2] == 1:  # EMITTERS
             if "[" in s1:
