@@ -1,15 +1,28 @@
 # (C)Marios Kyriakou 2016
 # University of Cyprus, KIOS Research Center for Intelligent Systems and Networks
 from qgis.PyQt.QtWidgets import (QAction, QFileDialog, QMessageBox, QWidget, QWizard, QWizardPage, QVBoxLayout)
-from .ExportEpanetInpFiles_dialog import ExportEpanetInpFilesDialog
-from qgis.PyQt.QtGui import *#QIcon
-from qgis.PyQt.QtCore import *#QVariant, Qt
+from qgis.PyQt.QtGui import *  # QIcon
+from qgis.PyQt.QtCore import *  # QVariant, Qt
 from qgis.core import (QgsProject, QgsLayerTreeGroup, QgsCoordinateReferenceSystem, QgsCoordinateTransform)
 from qgis.gui import QgsProjectionSelectionTreeWidget
 from .Epa2GIS import epa2gis
 from . import resources_rc
 import sys
 import os
+
+from qgis.PyQt import QtGui, uic, QtCore
+from qgis.PyQt.QtWidgets import QDialog
+
+FORM_CLASS, _ = uic.loadUiType(os.path.join(
+    os.path.dirname(__file__), 'ExportEpanetInpFiles_dialog_base.ui'))
+
+
+class ExportEpanetInpFilesDialog(QDialog, FORM_CLASS):
+    def __init__(self, parent=None):
+        """Constructor."""
+        QDialog.__init__(self, None, QtCore.Qt.WindowStaysOnTopHint)
+        super(ExportEpanetInpFilesDialog, self).__init__(parent)
+        self.setupUi(self)
 
 
 class CrsSelector(QWizard):
@@ -61,13 +74,13 @@ class ImpEpanet(object):
         self.iface = iface
         self.canvas = self.iface.mapCanvas()
         self.dlg = ExportEpanetInpFilesDialog()
-        self.sections = ['junctions', 'tanks', 'pipes', 'pumps', 'reservoirs', 'valves', 'STATUS', 'PATTERNS', 'CURVES',
-                         'CONTROLS', 'RULES', 'ENERGY', 'REACTIONS', 'REACTIONS_I', 'EMITTERS', 'QUALITY', 'SOURCES',
-                         'MIXING', 'TIMES', 'REPORT', 'OPTIONS']
+        self.sections = ['junctions', 'tanks', 'pipes', 'pumps', 'reservoirs', 'valves', 'status', 'patterns', 'curves',
+                         'controls', 'rules', 'energy', 'reactions', 'reactions_i', 'emitters', 'quality', 'sources',
+                         'mixing', 'times', 'report', 'options']
 
     def initGui(self):
         # Create action
-        sys.path.append(os.path.dirname(__file__)+'/impcount.py')
+        sys.path.append(os.path.dirname(__file__) + '/impcount.py')
 
         self.action = QAction(QIcon(":/plugins/ImportEpanetInpFiles/impepanet.png"), "Import Epanet Input File",
                               self.iface.mainWindow())
@@ -103,7 +116,7 @@ class ImpEpanet(object):
             return
 
         # Get project CRS
-        #proj_crs = QgsProject.instance().crs().authid()
+        proj_crs = QgsProject.instance().crs().authid()
 
         # Call selector
         global import_export
@@ -114,8 +127,8 @@ class ImpEpanet(object):
             return
 
         global result_crs
-        epsg_crs = result_crs.authid()# "EPSG:6312"
-        epa2gis(filePath[0], epsg_crs)
+        self.epsg_crs = result_crs.authid()
+        epa2gis(filePath[0], self.epsg_crs)
         # Clear messages
         self.iface.messageBar().clearWidgets()
         msgBox = QMessageBox()
@@ -124,7 +137,7 @@ class ImpEpanet(object):
         msgBox.exec_()
 
         # Restore CRS
-        #QgsProject.instance().setCrs(QgsCoordinateReferenceSystem(proj_crs))
+        QgsProject.instance().setCrs(QgsCoordinateReferenceSystem(proj_crs))
 
     def runexp(self):
 
@@ -136,17 +149,9 @@ class ImpEpanet(object):
         if not check:
             return
         global result_crs
-        self.epsg_crs = result_crs.authid()# "EPSG:6312"
 
         self.dlg.out.setText('')
         root = QgsProject.instance().layerTreeRoot()
-
-        #msg = QMessageBox()
-        #msg.setIcon(QMessageBox.Information)
-        #msg.setWindowTitle('Export INP File')
-        #msg.setText("Please select your group.")
-        #msg.setStandardButtons(QMessageBox.Ok)
-        #msg.exec_()
 
         ch = False
         try:
@@ -187,29 +192,31 @@ class ImpEpanet(object):
             msg.exec_()
             return
 
-        #self.layers = [lyr.layer() for lyr in group_ok.findLayers()]  #[layer for layer in QgsProject.instance().mapLayers().values()]#self.canvas.layers()
+        # self.layers = [lyr.layer() for lyr in group_ok.findLayers()]  #[layer for layer in QgsProject.instance().mapLayers().values()]#self.canvas.layers()
         self.layer_list = []
         self.layer_list = ['NONE']
         [self.layer_list.append(layer.name()) for layer in self.layers]
 
-        for sect in self.sections:
-            eval('self.dlg.sect_' + sect + '.clear()')
-            eval('self.dlg.sect_' + sect + '.addItems(self.layer_list)')
-            indices = [i for i, s in enumerate(self.layer_list) if sect in s]
-            if indices:
-                if sect == 'REACTIONS':
-                    eval('self.dlg.sect_' + sect + '.setCurrentIndex(indices[1])')
-                else:
-                    eval('self.dlg.sect_' + sect + '.setCurrentIndex(indices[0])')
-
-        self.dlg.setWindowFlags(Qt.CustomizeWindowHint | Qt.WindowStaysOnTopHint | Qt.WindowCloseButtonHint)
+        try:
+            for sect in self.sections:
+                eval(f'self.dlg.sect_{sect}.clear()')
+                eval(f'self.dlg.sect_{sect}.addItems(self.layer_list)')
+                indices = [i for i, s in enumerate(self.layer_list) if sect in s]
+                if indices:
+                    if sect == 'REACTIONS':
+                        eval(f'self.dlg.sect_{sect}.setCurrentIndex(indices[1])')
+                    else:
+                        eval(f'self.dlg.sect_{sect}.setCurrentIndex(indices[0])')
+        except:
+            pass
+        # self.dlg.setWindowFlags(Qt.CustomizeWindowHint | Qt.WindowStaysOnTopHint | Qt.WindowCloseButtonHint)
         self.dlg.show()
 
     def cancel(self):
         self.layer_list = []
         self.layer_list = ['NONE']
         for sect in self.sections:
-            exec('self.dlg.sect_' + sect + '.clear()')
+            exec(f'self.dlg.sect_{sect}.clear()')
         self.dlg.close()
 
     def toolButtonOut(self):
@@ -226,6 +233,12 @@ class ImpEpanet(object):
         msgBox.setWindowFlags(Qt.CustomizeWindowHint | Qt.WindowStaysOnTopHint | Qt.WindowCloseButtonHint)
         msgBox.exec_()
         return True
+
+    def write_line(self, f, line):
+        try:
+            write_line(line)
+        except:
+            pass
 
     def ok(self):
         # Here check if select OK button, get the layer fields
@@ -263,11 +276,11 @@ class ImpEpanet(object):
         xypipes_id = []
         xypipesvert = []
         for sect in self.sections:
-            exec('sect' + sect + '=[]') in globals(), locals()
-            exec('xy' + sect + '=[]') in globals(), locals()
-            if eval('self.dlg.sect_' + sect + '.currentText()') != 'NONE':
+            exec(f'sect{sect}=[]') in globals(), locals()
+            exec(f'xy{sect}=[]') in globals(), locals()
+            if eval(f'self.dlg.sect_{sect}.currentText()') != 'NONE':
                 # Get layer field names
-                indLayerName = self.layer_list.index(eval('self.dlg.sect_' + sect + '.currentText()')) - 1
+                indLayerName = self.layer_list.index(eval(f"self.dlg.sect_{sect}.currentText()")) - 1
                 provider = self.layers[indLayerName].dataProvider()
                 fields = provider.fields()
                 field_names = [field.name() for field in fields]
@@ -277,7 +290,7 @@ class ImpEpanet(object):
                 xform = QgsCoordinateTransform(crsSrc, crsDest, QgsProject.instance())
 
                 for elem in self.layers[indLayerName].getFeatures():
-                    eval('sect' + sect + '.append(dict(zip(field_names, elem.attributes())))')
+                    eval(f'sect{sect}.append(dict(zip(field_names, elem.attributes())))')
                     if any(sect in s for s in self.sections[0:5]):
                         geom = elem.geometry()
                         if self.layers[indLayerName].geometryType() == 0:
@@ -286,290 +299,289 @@ class ImpEpanet(object):
                         elif self.layers[indLayerName].geometryType() == 1:
                             geom_polyline = []
                             try:
-                                pntLines = geom.asPolyline()[0]
-                                for pnt in pntLines:
-                                    geom_polyline.append(xform.transform(pnt))
+                                gg = geom.asPolyline()[1:-1]
+                                pnt_lines = geom.asPolyline()[0]
+                                for pnt in pnt_lines:
+                                    geom_polyline.append(pnt)
+                                    # geom_polyline.append(xform.transform(pnt))
                             except:
-                                pntLines = geom.asMultiPolyline()[0]
-                                for pnt in pntLines:
-                                    geom_polyline.append(xform.transform(pnt))
+                                gg = geom.asMultiPolyline()[1:-1]
+                                pnt_lines = geom.asMultiPolyline([0])
+                                for pnt in pnt_lines:
+                                    geom_polyline.append(pnt)
 
-                            eval('xy' + sect + '.append(geom_polyline)')
+                            eval(f'xy{sect}.append(geom_polyline)')
                             if sect == 'pipes':
-                                if len(geom_polyline) > 2:
-                                    for pp in range(len(geom_polyline) - 2):
-                                        xypipes_id.append(elem.attributes()[0])
-                                        xypipesvert.append(geom_polyline[pp])
+                                if len(gg) > 2:
+                                    for value in gg:
+                                        xypipes_id.append(elem.attributes()[elem.fieldNameIndex('id')])
+                                        xypipesvert.append(value)
                     if sect == 'junctions':
-                        if 'Elevation' not in locals()['sect' + sect][0].keys():
+                        if 'elevation' not in locals()[f'sect{sect}'][0].keys():
                             QMessageBox.warning(QWidget(), "Message", "Elevation field is missing.")
         # (myDirectory,nameFile) = os.path.split(self.iface.activeLayer().dataProvider().dataSourceUri())
         my_directory = ''
         f = open(self.outEpanetName, 'wt')
-        f.write('[TITLE]\n')
-        f.write('Export input file via plugin ExportEpanetInpFiles. \n\n')
-        f.write('[JUNCTIONS]\n')
-        f.write(';ID              	Elev        	Demand      	Pattern \n')
+        write_line('[TITLE]\n')
+        write_line('Export input file via plugin ExportEpanetInpFiles. \n\n')
+        write_line('[JUNCTIONS]\n')
+        write_line(';ID              	Elev        	Demand      	Pattern \n')
         node_i_ds = []
         for i in range(len(locals()['sectjunctions'])):
-            node_i_ds.append(locals()['sectjunctions'][i]['ID'])
-            f.write(locals()['sectjunctions'][i]['ID'] + '   ' + str(locals()['sectjunctions'][i]['Elevation']) + '   ;' + str(locals()['sectjunctions'][i]['Desc'])  + '\n')
-        f.write('\n[RESERVOIRS]\n')
-        f.write(';ID              	Head        	Pattern     \n')
+            node_i_ds.append(locals()['sectjunctions'][i]['id'])
+            write_line(locals()['sectjunctions'][i]['id'] + '   ' + str(
+                locals()['sectjunctions'][i]['elevation']) + '   ;' + str(locals()['sectjunctions'][i]['desc']) + '\n')
+        write_line('\n[RESERVOIRS]\n')
+        write_line(';ID              	Head        	Pattern     \n')
         for i in range(len(locals()['sectreservoirs'])):
-            node_i_ds.append(locals()['sectreservoirs'][i]['ID'])
-            f.write(locals()['sectreservoirs'][i]['ID'] + '   ' + str(locals()['sectreservoirs'][i]['Head']) + '   ;' + str(locals()['sectreservoirs'][i]['Desc']) + '\n')
-        f.write('\n[TANKS]\n')
-        f.write(';ID              	Elevation   	InitLevel   	MinLevel    	MaxLevel    	Diameter    	MinVol      	VolCurve\n')
+            node_i_ds.append(locals()['sectreservoirs'][i]['id'])
+            write_line(
+                locals()['sectreservoirs'][i]['id'] + '   ' + str(locals()['sectreservoirs'][i]['head']) + '   ;' + str(
+                    locals()['sectreservoirs'][i]['desc']) + '\n')
+        write_line('\n[TANKS]\n')
+        write_line(
+            ';ID              	Elevation   	InitLevel   	MinLevel    	MaxLevel    	Diameter    	MinVol      	VolCurve\n')
         for i in range(len(locals()['secttanks'])):
-            node_i_ds.append(locals()['secttanks'][i]['ID'])
-            if locals()['secttanks'][i]['VolumeCurv'] == None:
-                locals()['secttanks'][i]['VolumeCurv'] = ""
-            f.write(locals()['secttanks'][i]['ID'] + '   ' + str(locals()['secttanks'][i]['Elevation']) + '   ' + str(locals()['secttanks'][i]['InitLevel'])
-                    + '   ' + str(locals()['secttanks'][i]['MinLevel']) + '   ' + str(locals()['secttanks'][i]['MaxLevel']) + '   ' + str(
-                locals()['secttanks'][i]['Diameter'])
-                    + '   ' + str(locals()['secttanks'][i]['MinVolume']) + '   ' + str(locals()['secttanks'][i]['VolumeCurv']) + '   ;' + str(locals()['secttanks'][i]['Desc']) + '\n')
-        f.write('\n[PIPES]\n')
-        f.write(';ID              	Node1           	Node2           	Length      	Diameter    	Roughness   	MinorLoss   	Status\n')
-        for i in range(len(locals()['sectpipes'])):
-            if (locals()['sectpipes'][i]['NodeFrom'] in node_i_ds) and (locals()['sectpipes'][i]['NodeTo'] in node_i_ds):
-                f.write(locals()['sectpipes'][i]['ID'] + '   ' + locals()['sectpipes'][i]['NodeFrom']
-                        + '   ' + locals()['sectpipes'][i]['NodeTo'] + '   ' + str(locals()['sectpipes'][i]['Length']) + '   ' + str(
-                    locals()['sectpipes'][i]['Diameter'])
-                        + '   ' + str(locals()['sectpipes'][i]['Roughness']) + '   ' + str(locals()['sectpipes'][i]['MinorLoss']) + '   ' +
-                        locals()['sectpipes'][i]['Status'] + '   ;' + str(locals()['sectpipes'][i]['Desc']) + '\n')
-        f.write('\n[PUMPS]\n')
-        f.write(';ID              	Node1           	Node2           	Parameters\n')
+            node_i_ds.append(locals()['secttanks'][i]['id'])
+            if locals()['secttanks'][i]['volumecurv'] == None:
+                locals()['secttanks'][i]['volumecurv'] = ""
+            write_line(
+                locals()['secttanks'][i]['id'] + '   ' + str(locals()['secttanks'][i]['elevation']) + '   ' + str(
+                    locals()['secttanks'][i]['initlevel'])
+                + '   ' + str(locals()['secttanks'][i]['minlevel']) + '   ' + str(
+                    locals()['secttanks'][i]['maxlevel']) + '   ' + str(
+                    locals()['secttanks'][i]['diameter'])
+                + '   ' + str(locals()['secttanks'][i]['minvolume']) + '   ' + str(
+                    locals()['secttanks'][i]['volumecurv']) + '   ;' + str(locals()['secttanks'][i]['desc']) + '\n')
+        write_line('\n[PIPES]\n')
+        write_line(';ID              	Node1           	Node2           	Length      	Diameter    	Roughness   	MinorLoss   	Status\n')
+
+        for i in range(0, len(locals()['sectpipes'])):
+            if (locals()['sectpipes'][i]['nodefrom'] in node_i_ds) and (
+                    locals()['sectpipes'][i]['nodeto'] in node_i_ds):
+                write_line(locals()['sectpipes'][i]['id'] + '   ' + locals()['sectpipes'][i]['nodefrom']
+                           + '   ' + locals()['sectpipes'][i]['nodeto'] + '   ' + str(
+                    locals()['sectpipes'][i]['length']) + '   ' + str(
+                    locals()['sectpipes'][i]['diameter'])
+                           + '   ' + str(locals()['sectpipes'][i]['roughness']) + '   ' + str(
+                    locals()['sectpipes'][i]['minorloss']) + '   ' +
+                           locals()['sectpipes'][i]['status'] + '   ;' + str(locals()['sectpipes'][i]['desc']) + '\n')
+        write_line('\n[PUMPS]\n')
+        write_line(';ID              	Node1           	Node2           	Parameters\n')
         for i in range(len(locals()['sectpumps'])):
-            if locals()['sectpumps'][i]['Curve'] != 'NULL':
+            if locals()['sectpumps'][i]['curve'] != 'NULL':
                 try:
-                    locals()['sectpumps'][i]['Curve'] = 'HEAD ' + locals()['sectpumps'][i]['Curve']
+                    locals()['sectpumps'][i]['curve'] = 'head ' + locals()['sectpumps'][i]['curve']
                 except:
-                    locals()['sectpumps'][i]['Curve'] = ''
+                    locals()['sectpumps'][i]['curve'] = ''
             else:
-                locals()['sectpumps'][i]['Curve'] = ''
+                locals()['sectpumps'][i]['curve'] = ''
 
-            if locals()['sectpumps'][i]['Power'] != 'NULL':
+            if locals()['sectpumps'][i]['power'] != 'NULL':
                 try:
-                    locals()['sectpumps'][i]['Power'] = 'POWER ' + locals()['sectpumps'][i]['Power']
+                    locals()['sectpumps'][i]['power'] = 'power ' + locals()['sectpumps'][i]['power']
                 except:
-                    locals()['sectpumps'][i]['Power'] = " "
+                    locals()['sectpumps'][i]['power'] = " "
             else:
-                locals()['sectpumps'][i]['Power'] = ''
+                locals()['sectpumps'][i]['power'] = ''
 
-            if locals()['sectpumps'][i]['Pattern'] != 'NULL':
+            if locals()['sectpumps'][i]['pattern'] != 'NULL':
                 try:
-                    locals()['sectpumps'][i]['Pattern'] = 'PATTERN ' + locals()['sectpumps'][i]['Pattern']
+                    locals()['sectpumps'][i]['pattern'] = 'pattern ' + locals()['sectpumps'][i]['pattern']
                 except:
-                    locals()['sectpumps'][i]['Pattern'] = ""
+                    locals()['sectpumps'][i]['pattern'] = ""
             else:
-                locals()['sectpumps'][i]['Pattern'] = ''
-
+                locals()['sectpumps'][i]['pattern'] = ''
 
             try:
-                f.write(locals()['sectpumps'][i]['ID'] + '   ' + locals()['sectpumps'][i]['NodeFrom']
-                        + '   ' + locals()['sectpumps'][i]['NodeTo'] + '   '  + str(locals()['sectpumps'][i]['Power']+  '   ' + locals()['sectpumps'][i]['Curve']
-                        + '   ' + str(locals()['sectpumps'][i]['Pattern']) ) + '   ;' + str(locals()['sectpumps'][i]['Desc'])+ '\n')
+                write_line(locals()['sectpumps'][i]['id'] + '   ' + locals()['sectpumps'][i]['nodefrom']
+                           + '   ' + locals()['sectpumps'][i]['nodeto'] + '   ' + str(
+                    locals()['sectpumps'][i]['power'] + '   ' + locals()['sectpumps'][i]['curve']
+                    + '   ' + str(locals()['sectpumps'][i]['pattern'])) + '   ;' + str(
+                    locals()['sectpumps'][i]['desc']) + '\n')
             except:
-                f.write(locals()['sectpumps'][i]['ID']  +'\n')
+                write_line(locals()['sectpumps'][i]['id'] + '\n')
 
-        f.write('\n[VALVES]\n')
-        f.write(';ID              	Node1           	Node2           	Diameter    	Type	Setting     	MinorLoss\n')
+        write_line('\n[VALVES]\n')
+        write_line(
+            ';ID              	Node1           	Node2           	Diameter    	Type	Setting     	MinorLoss\n')
         if self.dlg.sect_valves.currentText() != 'NONE':
             for i in range(len(locals()['sectvalves'])):
                 try:
-                    locals()['sectvalves'][i]['NodeFrom'] = locals()['sectvalves'][i]['NodeFrom'] + ''
+                    locals()['sectvalves'][i]['nodefrom'] = locals()['sectvalves'][i]['nodefrom'] + ''
                 except:
-                    locals()['sectvalves'][i]['NodeFrom'] = ""
+                    locals()['sectvalves'][i]['nodefrom'] = ""
 
                 try:
-                    locals()['sectvalves'][i]['NodeTo'] = locals()['sectvalves'][i]['NodeTo'] + ''
+                    locals()['sectvalves'][i]['nodeto'] = locals()['sectvalves'][i]['nodeto'] + ''
                 except:
-                    locals()['sectvalves'][i]['NodeTo'] = ""
-                f.write("{}   {}   {}   {}    {}    {}    {}   {}\n".format(locals()['sectvalves'][i]['ID'], locals()['sectvalves'][i]['NodeFrom'],
-                                                                       locals()['sectvalves'][i]['NodeTo'],
-                                                                       str(locals()['sectvalves'][i]['Diameter']),
-                                                                       locals()['sectvalves'][i]['Type'],
-                                                                       str(locals()['sectvalves'][i]['Setting']),
-                                                                       str(locals()['sectvalves'][i]['MinorLoss']),';'+str(locals()['sectvalves'][i]['Desc'])))
+                    locals()['sectvalves'][i]['nodeto'] = ""
 
-        f.write('\n[DEMANDS]\n')
-        f.write(';Junction        	Demand      	Pattern         	Category\n')
-        for i in range(len(locals()['sectjunctions'])):
-            for u in range(int((len(locals()['sectjunctions'][i]) - 2) / 2)):
-                if locals()['sectjunctions'][i]['Demand' + str(u + 1)] == 0 and str(
-                        locals()['sectjunctions'][i]['Pattern' + str(u + 1)]) == 'None':
-                    continue
-                if str(locals()['sectjunctions'][i]['Pattern' + str(u + 1)]) == 'NULL' or str(
-                        locals()['sectjunctions'][i]['Pattern' + str(u + 1)]) == 'None':
-                    locals()['sectjunctions'][i]['Pattern' + str(u + 1)] = ''
-                f.write(locals()['sectjunctions'][i]['ID'] + '   ' + str(locals()['sectjunctions'][i]['Demand' + str(u + 1)])
-                        + '   ' + str(locals()['sectjunctions'][i]['Pattern' + str(u + 1)]) + '\n')
+                write_line("{}   {}   {}   {}    {}    {}    {}   {}\n".format(locals()['sectvalves'][i]['id'],
+                                                                               locals()['sectvalves'][i]['nodefrom'],
+                                                                               locals()['sectvalves'][i]['nodeto'],
+                                                                               str(locals()['sectvalves'][i][
+                                                                                       'diameter']),
+                                                                               locals()['sectvalves'][i]['desc'],
+                                                                               str(locals()['sectvalves'][i][
+                                                                                       'setting']),
+                                                                               str(locals()['sectvalves'][i][
+                                                                                       'minorloss']), ';' + str(
+                        locals()['sectvalves'][i]['desc'])))
 
-        f.write('\n[STATUS]\n')
-        f.write(';ID              	Status/Setting\n')
-        for i in range(len(locals()['sectSTATUS'])):
-            f.write("{}   {}\n".format(locals()['sectSTATUS'][i]['Link_ID'], locals()['sectSTATUS'][i]['Status/Set']))
+        write_line('\n[DEMANDS]\n')
+        write_line(';Junction        	Demand      	Pattern         	Category\n')
+        try:
+            for i in range(len(locals()['sectjunctions'])):
+                for u in range(int((len(locals()['sectjunctions'][i]) - 2) / 2)):
+                    if locals()['sectjunctions'][i]['demand' + str(u + 1)] == 0 and str(
+                            locals()['sectjunctions'][i]['pattern' + str(u + 1)]) == 'None':
+                        continue
+                    if str(locals()['sectjunctions'][i]['pattern' + str(u + 1)]) == 'NULL' or str(
+                            locals()['sectjunctions'][i]['pattern' + str(u + 1)]) == 'None':
+                        locals()['sectjunctions'][i]['pattern' + str(u + 1)] = ''
+                    write_line(locals()['sectjunctions'][i]['id'] + '   ' + str(
+                        locals()['sectjunctions'][i]['demand' + str(u + 1)])
+                               + '   ' + str(locals()['sectjunctions'][i]['pattern' + str(u + 1)]) + '\n')
+        except:
+            pass
 
-        f.write('\n[PATTERNS]\n')
-        f.write(';ID              	Multipliers\n')
-        for i in range(len(locals()['sectPATTERNS'])):
-            f.write("{}   {}\n".format(locals()['sectPATTERNS'][i]['Pattern_ID'], locals()['sectPATTERNS'][i]['Multiplier']))
+        write_line('\n[STATUS]\n')
+        write_line(';ID              	Status/Setting\n')
+        for i in range(len(locals()['sectstatus'])):
+            write_line(
+                "{}   {}\n".format(locals()['sectstatus'][i]['link_id'], locals()['sectstatus'][i]['Status/Set']))
 
-        f.write('\n[CURVES]\n')
-        f.write(';ID              	X-Value     	Y-Value\n')
-        for i in range(len(locals()['sectCURVES'])):
-            f.write(";{}:\n   {}   {}   {}\n".format(locals()['sectCURVES'][i]['Type'], locals()['sectCURVES'][i]['Curve_ID'],
-                                                     str(locals()['sectCURVES'][i]['X-Value']),str(locals()['sectCURVES'][i]['Y-Value'])))
+        write_line('\n[PATTERNS]\n')
+        write_line(';ID              	Multipliers\n')
+        for i in range(len(locals()['sectpatterns'])):
+            write_line("{}   {}\n".format(locals()['sectpatterns'][i]['pattern_id'],
+                                          locals()['sectpatterns'][i]['multiplier']))
 
-        f.write('\n[CONTROLS]\n')
-        f.write(';------------------------------------------------------------------ \n')
-        for i in range(len(locals()['sectCONTROLS'])):
-            f.write("{}\n".format(locals()['sectCONTROLS'][i]['Controls']))
+        write_line('\n[CURVES]\n')
+        write_line(';ID              	X-Value     	Y-Value\n')
+        for i in range(len(locals()['sectcurves'])):
+            write_line(";{}:\n   {}   {}   {}\n".format(locals()['sectcurves'][i]['desc'],
+                                                        locals()['sectcurves'][i]['curve_ID'],
+                                                        str(locals()['sectcurves'][i]['x-value']),
+                                                        str(locals()['sectcurves'][i]['y-value'])))
 
-        f.write('\n[RULES]\n')
-        f.write(';Rules \n')
-        for i in range(len(locals()['sectRULES'])):
-            f.write("RULE {}\n   {}\n".format(locals()['sectRULES'][i]['Rule_ID'], locals()['sectRULES'][i]['Rule']))
+        write_line('\n[CONTROLS]\n')
+        write_line(';------------------------------------------------------------------ \n')
+        for i in range(len(locals()['sectcontrols'])):
+            write_line("{}\n".format(locals()['sectcontrols'][i]['controls']))
 
-        f.write('\n[ENERGY]\n')
-        if locals()['sectENERGY']:
-            try: f.write('Global Efficiency   ' + str(locals()['sectENERGY'][0]['GlobalEffi']) + '\n')
-            except: pass
-            try: f.write('Global Price    ' + str(locals()['sectENERGY'][0]['GlobalPric']) + '\n')
-            except: pass
-            try: f.write('Demand Charge   ' + str(locals()['sectENERGY'][0]['DemCharge']) + '\n')
-            except: pass
+        write_line('\n[RULES]\n')
+        write_line(';Rules \n')
+        for i in range(len(locals()['sectrules'])):
+            write_line("RULE {}\n   {}\n".format(locals()['sectrules'][i]['rule_id'], locals()['sectrules'][i]['rule']))
 
-        f.write('\n[REACTIONS]\n')
-        f.write(';Type     	Pipe/Tank       	Coefficient\n')
-        if locals()['sectREACTIONS']:
-            try: f.write('Order Bulk   ' + str(locals()['sectREACTIONS'][0]['OrderBulk']) + '\n')
-            except: pass
-            try: f.write('Order Tank    ' + str(locals()['sectREACTIONS'][0]['OrderTank']) + '\n')
-            except: pass
-            try: f.write('Order Wall   ' + str(locals()['sectREACTIONS'][0]['OrderWall']) + '\n')
-            except: pass
-            try: f.write('Global Bulk   ' + str(locals()['sectREACTIONS'][0]['GlobalBulk']) + '\n')
-            except: pass
-            try: f.write('Global Wall   ' + str(locals()['sectREACTIONS'][0]['GlobalWall']) + '\n')
-            except: pass
-            try: f.write('Limiting Potential   ' + str(locals()['sectREACTIONS'][0]['LimPotent']) + '\n')
-            except: pass
-            try: f.write('Roughness Correlation   ' + str(locals()['sectREACTIONS'][0]['RoughCorr']) + '\n')
-            except: pass
+        write_line('\n[ENERGY]\n')
+        if locals()['sectenergy']:
+            write_line('Global Efficiency   ' + str(locals()['sectenergy'][0]['globalEffi']) + '\n')
+            write_line('Global Price    ' + str(locals()['sectenergy'][0]['globalPric']) + '\n')
+            write_line('Demand Charge   ' + str(locals()['sectenergy'][0]['demCharge']) + '\n')
 
-        f.write('\n[REACTIONS]\n')
-        f.write(';Reactions\n')
-        for i in range(len(locals()['sectREACTIONS_I'])):
-            f.write('{}    {}    {} \n'.format(locals()['sectREACTIONS_I'][i]['Type'],
-                                               locals()['sectREACTIONS_I'][i]['Pipe/Tank'], str(locals()['sectREACTIONS_I'][i]['Coeff.'])))
-        f.write('\n[EMITTERS]\n')
-        f.write(';Junction        	Coefficient\n')
-        for i in range(len(locals()['sectEMITTERS'])):
-            f.write('{}    {}\n'.format(locals()['sectEMITTERS'][i]['Junc_ID'], str(locals()['sectEMITTERS'][i]['Coeff.'])))
+        write_line('\n[REACTIONS]\n')
+        write_line(';Type     	Pipe/Tank       	Coefficient\n')
+        if locals()['sectreactions']:
+            write_line('Order Bulk   ' + str(locals()['sectreactions'][0]['orderBulk']) + '\n')
+            write_line('Order Tank    ' + str(locals()['sectreactions'][0]['orderTank']) + '\n')
+            write_line('Order Wall   ' + str(locals()['sectreactions'][0]['orderWall']) + '\n')
+            write_line('Global Bulk   ' + str(locals()['sectreactions'][0]['globalBulk']) + '\n')
+            write_line('Global Wall   ' + str(locals()['sectreactions'][0]['globalWall']) + '\n')
+            write_line('Limiting Potential   ' + str(locals()['sectreactions'][0]['limpotent']) + '\n')
+            write_line('Roughness Correlation   ' + str(locals()['sectreactions'][0]['roughcorr']) + '\n')
 
-        f.write('\n[SOURCES]\n')
-        f.write(';Node            	Type        	Quality     	Pattern\n')
-        for i in range(len(locals()['sectSOURCES'])):
+        write_line('\n[REACTIONS]\n')
+        write_line(';Reactions\n')
+        for i in range(len(locals()['sectreactions_I'])):
+            write_line('{}    {}    {} \n'.format(locals()['sectreactions_I'][i]['desc'],
+                                                  locals()['sectreactions_I'][i]['pipe/tank'],
+                                                  str(locals()['sectreactions_I'][i]['coeff.'])))
+        write_line('\n[EMITTERS]\n')
+        write_line(';Junction        	Coefficient\n')
+        for i in range(len(locals()['sectemitters'])):
+            write_line(
+                '{}    {}\n'.format(locals()['sectemitters'][i]['junc_id'], str(locals()['sectemitters'][i]['coeff.'])))
+
+        write_line('\n[SOURCES]\n')
+        write_line(';Node            	Type        	Quality     	Pattern\n')
+        for i in range(len(locals()['sectsources'])):
             try:
-                locals()['sectSOURCES'][i]['Pattern'] = locals()['sectSOURCES'][i]['Pattern']  + ''
+                locals()['sectsources'][i]['pattern'] = locals()['sectsources'][i]['pattern'] + ''
             except:
-                locals()['sectSOURCES'][i]['Pattern'] = ''
-            f.write("{}   {}   {}   {}\n".format(locals()['sectSOURCES'][i]['Node_ID'], locals()['sectSOURCES'][i]['Type'],
-                                                                   str(locals()['sectSOURCES'][i]['Strength']),
-                                                                   locals()['sectSOURCES'][i]['Pattern']))
+                locals()['sectsources'][i]['pattern'] = ''
+            write_line(
+                "{}   {}   {}   {}\n".format(locals()['sectsources'][i]['node_id'], locals()['sectsources'][i]['desc'],
+                                             str(locals()['sectsources'][i]['strength']),
+                                             locals()['sectsources'][i]['pattern']))
 
-        f.write('\n[MIXING]\n')
-        f.write(';Tank            	Model\n')
-        for i in range(len(locals()['sectMIXING'])):
-            f.write('{}    {}    {} \n'.format(locals()['sectMIXING'][i]['Tank_ID'],
-                                               locals()['sectMIXING'][i]['Model'], str(locals()['sectMIXING'][i]['Fraction'])))
+        write_line('\n[MIXING]\n')
+        write_line(';Tank            	Model\n')
+        for i in range(len(locals()['sectmixing'])):
+            write_line('{}    {}    {} \n'.format(locals()['sectmixing'][i]['tank_id'],
+                                                  locals()['sectmixing'][i]['model'],
+                                                  str(locals()['sectmixing'][i]['fraction'])))
 
-        f.write('\n[TIMES]\n')
-        f.write(';Times\n')
-        if locals()['sectTIMES']:
-            try: f.write('Duration   ' + str(locals()['sectTIMES'][0]['Duration']) + '\n')
-            except: pass
-            try: f.write('Hydraulic Timestep    ' + str(locals()['sectTIMES'][0]['HydStep']) + '\n')
-            except: pass
-            try: f.write('Quality Timestep   ' + str(locals()['sectTIMES'][0]['QualStep']) + '\n')
-            except: pass
-            try: f.write('Pattern Timestep   ' + str(locals()['sectTIMES'][0]['PatStep']) + '\n')
-            except: pass
-            try: f.write('Pattern Start   ' + str(locals()['sectTIMES'][0]['PatStart']) + '\n')
-            except: pass
-            try: f.write('Report Timestep   ' + str(locals()['sectTIMES'][0]['RepStep']) + '\n')
-            except: pass
-            try: f.write('Report Start   ' + str(locals()['sectTIMES'][0]['RepStart']) + '\n')
-            except: pass
-            try: f.write('Start ClockTime   ' + str(locals()['sectTIMES'][0]['StartClock']) + '\n')
-            except: pass
-            try: f.write('Statistic   ' + str(locals()['sectTIMES'][0]['Statistic']) + '\n')
-            except: pass
+        write_line('\n[TIMES]\n')
+        write_line(';Times\n')
+        if locals()['secttimes']:
+            write_line('Duration   ' + str(locals()['secttimes'][0]['duration']) + '\n')
+            write_line('Hydraulic Timestep    ' + str(locals()['secttimes'][0]['hydstep']) + '\n')
+            write_line('Quality Timestep   ' + str(locals()['secttimes'][0]['qualstep']) + '\n')
+            write_line('Pattern Timestep   ' + str(locals()['secttimes'][0]['patstep']) + '\n')
+            write_line('Pattern Start   ' + str(locals()['secttimes'][0]['patstart']) + '\n')
+            write_line('Report Timestep   ' + str(locals()['secttimes'][0]['repstep']) + '\n')
+            write_line('Report Start   ' + str(locals()['secttimes'][0]['repstart']) + '\n')
+            write_line('Start ClockTime   ' + str(locals()['secttimes'][0]['startclock']) + '\n')
+            write_line('Statistic   ' + str(locals()['secttimes'][0]['statistic']) + '\n')
 
-        f.write('\n[REPORT]\n')
-        f.write(';Report\n')
-        if locals()['sectREPORT']:
-            try: f.write('Status   ' + locals()['sectREPORT'][0]['Status'] + '\n')
-            except: pass
-            try: f.write('Summary    ' + locals()['sectREPORT'][0]['Summary'] + '\n')
-            except: pass
-            try: f.write('Page   ' + locals()['sectREPORT'][0]['Page'] + '\n')
-            except: pass
+        write_line('\n[REPORT]\n')
+        write_line(';Report\n')
+        if locals()['sectreport']:
+            write_line('Status   ' + locals()['sectreport'][0]['status'] + '\n')
+            write_line('Summary    ' + locals()['sectreport'][0]['summary'] + '\n')
+            write_line('Page   ' + locals()['sectreport'][0]['page'] + '\n')
 
-        f.write('\n[OPTIONS]\n')
-        f.write(';Options\n')
-        if locals()['sectOPTIONS']:
-            try: f.write('Units   ' + str(locals()['sectOPTIONS'][0]['Units']) + '\n');
-            except: pass
-            try: f.write('Headloss    ' + str(locals()['sectOPTIONS'][0]['Headloss']) + '\n')
-            except: pass
-            try: f.write('Specific Gravity   ' + str(locals()['sectOPTIONS'][0]['SpecGrav']) + '\n')
-            except: pass
-            try: f.write('Viscosity   ' + str(locals()['sectOPTIONS'][0]['Viscosity']) + '\n')
-            except: pass
-            try: f.write('Trials   ' + str(locals()['sectOPTIONS'][0]['Trials']) + '\n')
-            except: pass
-            try: f.write('Accuracy   ' + str(locals()['sectOPTIONS'][0]['Accuracy']) + '\n')
-            except: pass
-            try: f.write('CHECKFREQ   ' + str(locals()['sectOPTIONS'][0]['CheckFreq']) + '\n')
-            except: pass
-            try: f.write('MAXCHECK   ' + str(locals()['sectOPTIONS'][0]['MaxCheck']) + '\n')
-            except: pass
-            try: f.write('DAMPLIMIT   ' + str(locals()['sectOPTIONS'][0]['DampLimit']) + '\n')
-            except: pass
-            try: f.write('Unbalanced   ' + str(locals()['sectOPTIONS'][0]['Unbalanced']) + '\n')
-            except: pass
-            try: f.write('Pattern   ' + str(locals()['sectOPTIONS'][0]['PatID']) + '\n')
-            except: pass
-            try: f.write('Demand Multiplier   ' + str(locals()['sectOPTIONS'][0]['DemMult']) + '\n')
-            except: pass
-            try: f.write('Emitter Exponent   ' + str(locals()['sectOPTIONS'][0]['EmitExp']) + '\n')
-            except: pass
-            try: f.write('Quality   ' + str(locals()['sectOPTIONS'][0]['Quality']) + '\n')
-            except: pass
-            try: f.write('Diffusivity   ' + str(locals()['sectOPTIONS'][0]['Diffusivit']) + '\n')
-            except: pass
-            try: f.write('Tolerance   ' + str(locals()['sectOPTIONS'][0]['Tolerance']) + '\n')
-            except: pass
+        write_line('\n[OPTIONS]\n')
+        write_line(';Options\n')
+        if locals()['sectoptions']:
+            write_line('Units   ' + str(locals()['sectoptions'][0]['units']) + '\n')
+            write_line('Headloss    ' + str(locals()['sectoptions'][0]['headloss']) + '\n')
+            write_line('Specific Gravity   ' + str(locals()['sectoptions'][0]['specgrav']) + '\n')
+            write_line('Viscosity   ' + str(locals()['sectoptions'][0]['viscosity']) + '\n')
+            write_line('Trials   ' + str(locals()['sectoptions'][0]['trials']) + '\n')
+            write_line('Accuracy   ' + str(locals()['sectoptions'][0]['accuracy']) + '\n')
+            write_line('CHECKFREQ   ' + str(locals()['sectoptions'][0]['checkfreq']) + '\n')
+            write_line('MAXCHECK   ' + str(locals()['sectoptions'][0]['maxcheck']) + '\n')
+            write_line('DAMPLIMIT   ' + str(locals()['sectoptions'][0]['damplimit']) + '\n')
+            write_line('Unbalanced   ' + str(locals()['sectoptions'][0]['unbalanced']) + '\n')
+            write_line('Pattern   ' + str(locals()['sectoptions'][0]['patid']) + '\n')
+            write_line('Demand Multiplier   ' + str(locals()['sectoptions'][0]['demmult']) + '\n')
+            write_line('Emitter Exponent   ' + str(locals()['sectoptions'][0]['emitexp']) + '\n')
+            write_line('Quality   ' + str(locals()['sectoptions'][0]['quality']) + '\n')
+            write_line('Diffusivity   ' + str(locals()['sectoptions'][0]['diffusivit']) + '\n')
+            write_line('Tolerance   ' + str(locals()['sectoptions'][0]['tolerance']) + '\n')
 
-        f.write('\n[COORDINATES]\n')
-        f.write(';Coordinates\n')
+        write_line('\n[COORDINATES]\n')
+        write_line(';Coordinates\n')
         for i in range(len(locals()['sectjunctions'])):
-            f.write(locals()['sectjunctions'][i]['ID'] + '   ' + str(locals()['xyjunctions'][i][0]) + '   ' + str(locals()['xyjunctions'][i][1]) + '\n')
+            write_line(locals()['sectjunctions'][i]['id'] + '   ' + str(locals()['xyjunctions'][i][0]) + '   ' + str(
+                locals()['xyjunctions'][i][1]) + '\n')
         for i in range(len(locals()['sectreservoirs'])):
-            f.write(locals()['sectreservoirs'][i]['ID'] + '   ' + str(locals()['xyreservoirs'][i][0]) + '   ' + str(locals()['xyreservoirs'][i][1]) + '\n')
+            write_line(locals()['sectreservoirs'][i]['id'] + '   ' + str(locals()['xyreservoirs'][i][0]) + '   ' + str(
+                locals()['xyreservoirs'][i][1]) + '\n')
         for i in range(len(locals()['secttanks'])):
-            f.write(locals()['secttanks'][i]['ID'] + '   ' + str(locals()['xytanks'][i][0]) + '   ' + str(locals()['xytanks'][i][1]) + '\n')
+            write_line(locals()['secttanks'][i]['id'] + '   ' + str(locals()['xytanks'][i][0]) + '   ' + str(
+                locals()['xytanks'][i][1]) + '\n')
 
-        f.write('\n[VERTICES]\n')
-        f.write(';Vertices\n')
+        write_line('\n[VERTICES]\n')
+        write_line(';Vertices\n')
 
-        for l in range(len(xypipes_id)):
-                f.write(xypipes_id[l] + '   ' + str(xypipesvert[l][0]) + '   ' + str(xypipesvert[l][1]) + '\n')
-
-        f.write('\n[END]\n')
+        for i, id in enumerate(xypipes_id):
+            write_line(str(id) + '   ' + str(xypipesvert[i][0]) + '   ' + str(xypipesvert[i][1]) + '\n')
+        write_line('\n[END]\n')
 
         f.close()
 
@@ -578,3 +590,5 @@ class ImpEpanet(object):
         msgBox.setWindowTitle('Export Options')
         msgBox.setText('Export Epanet Inp File "' + self.outEpanetName + '" succesful.')
         msgBox.exec_()
+
+        os.startfile(self.outEpanetName)
