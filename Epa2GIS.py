@@ -481,7 +481,7 @@ def epa2gis(inpname, epsg_crs):
                 else:
                     ppRep.append(report[i][1])
             else:
-                prRep.addAttributes([QgsField(mm, QVariant.String)])
+                prRep.addAttributes([QgsField(mm.lower(), QVariant.String)])
                 if len(report[i]) > 2:
                     ppRep.append(report[i][1] + ' ' + report[i][2])
                 else:

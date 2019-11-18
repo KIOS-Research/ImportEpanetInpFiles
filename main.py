@@ -149,6 +149,7 @@ class ImpEpanet(object):
         if not check:
             return
         global result_crs
+        self.epsg_crs = result_crs.authid()  # "EPSG:6312"
 
         self.dlg.out.setText('')
         root = QgsProject.instance().layerTreeRoot()
@@ -234,12 +235,6 @@ class ImpEpanet(object):
         msgBox.exec_()
         return True
 
-    def write_line(self, f, line):
-        try:
-            write_line(line)
-        except:
-            pass
-
     def ok(self):
         # Here check if select OK button, get the layer fields
         # Initialize
@@ -306,7 +301,7 @@ class ImpEpanet(object):
                                     # geom_polyline.append(xform.transform(pnt))
                             except:
                                 gg = geom.asMultiPolyline()[1:-1]
-                                pnt_lines = geom.asMultiPolyline([0])
+                                pnt_lines = geom.asMultiPolyline()
                                 for pnt in pnt_lines:
                                     geom_polyline.append(pnt)
 
@@ -322,30 +317,30 @@ class ImpEpanet(object):
         # (myDirectory,nameFile) = os.path.split(self.iface.activeLayer().dataProvider().dataSourceUri())
         my_directory = ''
         f = open(self.outEpanetName, 'wt')
-        write_line('[TITLE]\n')
-        write_line('Export input file via plugin ExportEpanetInpFiles. \n\n')
-        write_line('[JUNCTIONS]\n')
-        write_line(';ID              	Elev        	Demand      	Pattern \n')
+        f.write('[TITLE]\n')
+        f.write('Export input file via plugin ExportEpanetInpFiles. \n\n')
+        f.write('[JUNCTIONS]\n')
+        f.write(';ID              	Elev        	Demand      	Pattern \n')
         node_i_ds = []
         for i in range(len(locals()['sectjunctions'])):
             node_i_ds.append(locals()['sectjunctions'][i]['id'])
-            write_line(locals()['sectjunctions'][i]['id'] + '   ' + str(
+            f.write(locals()['sectjunctions'][i]['id'] + '   ' + str(
                 locals()['sectjunctions'][i]['elevation']) + '   ;' + str(locals()['sectjunctions'][i]['desc']) + '\n')
-        write_line('\n[RESERVOIRS]\n')
-        write_line(';ID              	Head        	Pattern     \n')
+        f.write('\n[RESERVOIRS]\n')
+        f.write(';ID              	Head        	Pattern     \n')
         for i in range(len(locals()['sectreservoirs'])):
             node_i_ds.append(locals()['sectreservoirs'][i]['id'])
-            write_line(
+            f.write(
                 locals()['sectreservoirs'][i]['id'] + '   ' + str(locals()['sectreservoirs'][i]['head']) + '   ;' + str(
                     locals()['sectreservoirs'][i]['desc']) + '\n')
-        write_line('\n[TANKS]\n')
-        write_line(
+        f.write('\n[TANKS]\n')
+        f.write(
             ';ID              	Elevation   	InitLevel   	MinLevel    	MaxLevel    	Diameter    	MinVol      	VolCurve\n')
         for i in range(len(locals()['secttanks'])):
             node_i_ds.append(locals()['secttanks'][i]['id'])
             if locals()['secttanks'][i]['volumecurv'] == None:
                 locals()['secttanks'][i]['volumecurv'] = ""
-            write_line(
+            f.write(
                 locals()['secttanks'][i]['id'] + '   ' + str(locals()['secttanks'][i]['elevation']) + '   ' + str(
                     locals()['secttanks'][i]['initlevel'])
                 + '   ' + str(locals()['secttanks'][i]['minlevel']) + '   ' + str(
@@ -353,21 +348,21 @@ class ImpEpanet(object):
                     locals()['secttanks'][i]['diameter'])
                 + '   ' + str(locals()['secttanks'][i]['minvolume']) + '   ' + str(
                     locals()['secttanks'][i]['volumecurv']) + '   ;' + str(locals()['secttanks'][i]['desc']) + '\n')
-        write_line('\n[PIPES]\n')
-        write_line(';ID              	Node1           	Node2           	Length      	Diameter    	Roughness   	MinorLoss   	Status\n')
+        f.write('\n[PIPES]\n')
+        f.write(';ID              	Node1           	Node2           	Length      	Diameter    	Roughness   	MinorLoss   	Status\n')
 
         for i in range(0, len(locals()['sectpipes'])):
             if (locals()['sectpipes'][i]['nodefrom'] in node_i_ds) and (
                     locals()['sectpipes'][i]['nodeto'] in node_i_ds):
-                write_line(locals()['sectpipes'][i]['id'] + '   ' + locals()['sectpipes'][i]['nodefrom']
+                f.write(locals()['sectpipes'][i]['id'] + '   ' + locals()['sectpipes'][i]['nodefrom']
                            + '   ' + locals()['sectpipes'][i]['nodeto'] + '   ' + str(
                     locals()['sectpipes'][i]['length']) + '   ' + str(
                     locals()['sectpipes'][i]['diameter'])
                            + '   ' + str(locals()['sectpipes'][i]['roughness']) + '   ' + str(
                     locals()['sectpipes'][i]['minorloss']) + '   ' +
                            locals()['sectpipes'][i]['status'] + '   ;' + str(locals()['sectpipes'][i]['desc']) + '\n')
-        write_line('\n[PUMPS]\n')
-        write_line(';ID              	Node1           	Node2           	Parameters\n')
+        f.write('\n[PUMPS]\n')
+        f.write(';ID              	Node1           	Node2           	Parameters\n')
         for i in range(len(locals()['sectpumps'])):
             if locals()['sectpumps'][i]['curve'] != 'NULL':
                 try:
@@ -394,16 +389,16 @@ class ImpEpanet(object):
                 locals()['sectpumps'][i]['pattern'] = ''
 
             try:
-                write_line(locals()['sectpumps'][i]['id'] + '   ' + locals()['sectpumps'][i]['nodefrom']
+                f.write(locals()['sectpumps'][i]['id'] + '   ' + locals()['sectpumps'][i]['nodefrom']
                            + '   ' + locals()['sectpumps'][i]['nodeto'] + '   ' + str(
                     locals()['sectpumps'][i]['power'] + '   ' + locals()['sectpumps'][i]['curve']
                     + '   ' + str(locals()['sectpumps'][i]['pattern'])) + '   ;' + str(
                     locals()['sectpumps'][i]['desc']) + '\n')
             except:
-                write_line(locals()['sectpumps'][i]['id'] + '\n')
+                f.write(locals()['sectpumps'][i]['id'] + '\n')
 
-        write_line('\n[VALVES]\n')
-        write_line(
+        f.write('\n[VALVES]\n')
+        f.write(
             ';ID              	Node1           	Node2           	Diameter    	Type	Setting     	MinorLoss\n')
         if self.dlg.sect_valves.currentText() != 'NONE':
             for i in range(len(locals()['sectvalves'])):
@@ -417,7 +412,7 @@ class ImpEpanet(object):
                 except:
                     locals()['sectvalves'][i]['nodeto'] = ""
 
-                write_line("{}   {}   {}   {}    {}    {}    {}   {}\n".format(locals()['sectvalves'][i]['id'],
+                f.write("{}   {}   {}   {}    {}    {}    {}   {}\n".format(locals()['sectvalves'][i]['id'],
                                                                                locals()['sectvalves'][i]['nodefrom'],
                                                                                locals()['sectvalves'][i]['nodeto'],
                                                                                str(locals()['sectvalves'][i][
@@ -429,8 +424,8 @@ class ImpEpanet(object):
                                                                                        'minorloss']), ';' + str(
                         locals()['sectvalves'][i]['desc'])))
 
-        write_line('\n[DEMANDS]\n')
-        write_line(';Junction        	Demand      	Pattern         	Category\n')
+        f.write('\n[DEMANDS]\n')
+        f.write(';Junction        	Demand      	Pattern         	Category\n')
         try:
             for i in range(len(locals()['sectjunctions'])):
                 for u in range(int((len(locals()['sectjunctions'][i]) - 2) / 2)):
@@ -440,148 +435,282 @@ class ImpEpanet(object):
                     if str(locals()['sectjunctions'][i]['pattern' + str(u + 1)]) == 'NULL' or str(
                             locals()['sectjunctions'][i]['pattern' + str(u + 1)]) == 'None':
                         locals()['sectjunctions'][i]['pattern' + str(u + 1)] = ''
-                    write_line(locals()['sectjunctions'][i]['id'] + '   ' + str(
+                    f.write(locals()['sectjunctions'][i]['id'] + '   ' + str(
                         locals()['sectjunctions'][i]['demand' + str(u + 1)])
                                + '   ' + str(locals()['sectjunctions'][i]['pattern' + str(u + 1)]) + '\n')
         except:
             pass
 
-        write_line('\n[STATUS]\n')
-        write_line(';ID              	Status/Setting\n')
+        f.write('\n[STATUS]\n')
+        f.write(';ID              	Status/Setting\n')
         for i in range(len(locals()['sectstatus'])):
-            write_line(
-                "{}   {}\n".format(locals()['sectstatus'][i]['link_id'], locals()['sectstatus'][i]['Status/Set']))
+            try:
+                f.write(
+                    "{}   {}\n".format(locals()['sectstatus'][i]['link_id'], locals()['sectstatus'][i]['status/set']))
+            except: pass
 
-        write_line('\n[PATTERNS]\n')
-        write_line(';ID              	Multipliers\n')
+        f.write('\n[PATTERNS]\n')
+        f.write(';ID              	Multipliers\n')
         for i in range(len(locals()['sectpatterns'])):
-            write_line("{}   {}\n".format(locals()['sectpatterns'][i]['pattern_id'],
+            try:
+                f.write("{}   {}\n".format(locals()['sectpatterns'][i]['pattern_id'],
                                           locals()['sectpatterns'][i]['multiplier']))
+            except:
+                pass
 
-        write_line('\n[CURVES]\n')
-        write_line(';ID              	X-Value     	Y-Value\n')
+        f.write('\n[CURVES]\n')
+        f.write(';ID              	X-Value     	Y-Value\n')
         for i in range(len(locals()['sectcurves'])):
-            write_line(";{}:\n   {}   {}   {}\n".format(locals()['sectcurves'][i]['desc'],
-                                                        locals()['sectcurves'][i]['curve_ID'],
-                                                        str(locals()['sectcurves'][i]['x-value']),
-                                                        str(locals()['sectcurves'][i]['y-value'])))
+            try:
+                f.write(";{}:\n   {}   {}   {}\n".format(locals()['sectcurves'][i]['desc'],
+                                                            locals()['sectcurves'][i]['curve_ID'],
+                                                            str(locals()['sectcurves'][i]['x-value']),
+                                                            str(locals()['sectcurves'][i]['y-value'])))
+            except:
+                pass
 
-        write_line('\n[CONTROLS]\n')
-        write_line(';------------------------------------------------------------------ \n')
+        f.write('\n[CONTROLS]\n')
+        f.write(';------------------------------------------------------------------ \n')
         for i in range(len(locals()['sectcontrols'])):
-            write_line("{}\n".format(locals()['sectcontrols'][i]['controls']))
+            try:
+                f.write("{}\n".format(locals()['sectcontrols'][i]['controls']))
+            except:
+                pass
 
-        write_line('\n[RULES]\n')
-        write_line(';Rules \n')
+        f.write('\n[RULES]\n')
+        f.write(';Rules \n')
         for i in range(len(locals()['sectrules'])):
-            write_line("RULE {}\n   {}\n".format(locals()['sectrules'][i]['rule_id'], locals()['sectrules'][i]['rule']))
+            try:
+                f.write("RULE {}\n   {}\n".format(locals()['sectrules'][i]['rule_id'], locals()['sectrules'][i]['rule']))
+            except:
+                pass
 
-        write_line('\n[ENERGY]\n')
+        f.write('\n[ENERGY]\n')
         if locals()['sectenergy']:
-            write_line('Global Efficiency   ' + str(locals()['sectenergy'][0]['globalEffi']) + '\n')
-            write_line('Global Price    ' + str(locals()['sectenergy'][0]['globalPric']) + '\n')
-            write_line('Demand Charge   ' + str(locals()['sectenergy'][0]['demCharge']) + '\n')
+            try:
+                f.write('Global Efficiency   ' + str(locals()['sectenergy'][0]['globaleffi']) + '\n')
+            except:
+                pass
 
-        write_line('\n[REACTIONS]\n')
-        write_line(';Type     	Pipe/Tank       	Coefficient\n')
+            try:
+                f.write('Global Price    ' + str(locals()['sectenergy'][0]['globalpric']) + '\n')
+            except:
+                pass
+
+            try:
+                f.write('Demand Charge   ' + str(locals()['sectenergy'][0]['demcharge']) + '\n')
+            except:
+                pass
+
+        f.write('\n[REACTIONS]\n')
+        f.write(';Type     	Pipe/Tank       	Coefficient\n')
         if locals()['sectreactions']:
-            write_line('Order Bulk   ' + str(locals()['sectreactions'][0]['orderBulk']) + '\n')
-            write_line('Order Tank    ' + str(locals()['sectreactions'][0]['orderTank']) + '\n')
-            write_line('Order Wall   ' + str(locals()['sectreactions'][0]['orderWall']) + '\n')
-            write_line('Global Bulk   ' + str(locals()['sectreactions'][0]['globalBulk']) + '\n')
-            write_line('Global Wall   ' + str(locals()['sectreactions'][0]['globalWall']) + '\n')
-            write_line('Limiting Potential   ' + str(locals()['sectreactions'][0]['limpotent']) + '\n')
-            write_line('Roughness Correlation   ' + str(locals()['sectreactions'][0]['roughcorr']) + '\n')
+            try:
+                f.write('Order Bulk   ' + str(locals()['sectreactions'][0]['orderbulk']) + '\n')
+            except:
+                pass
+            try:
+                f.write('Order Tank    ' + str(locals()['sectreactions'][0]['ordertank']) + '\n')
+            except:
+                pass
+            try:
+                f.write('Order Wall   ' + str(locals()['sectreactions'][0]['orderwall']) + '\n')
+            except:
+                pass
+            try:
+                f.write('Global Bulk   ' + str(locals()['sectreactions'][0]['globalbulk']) + '\n')
+            except:
+                pass
+            try:
+                f.write('Global Wall   ' + str(locals()['sectreactions'][0]['globalwall']) + '\n')
+            except:
+                pass
+            try:
+                f.write('Limiting Potential   ' + str(locals()['sectreactions'][0]['limpotent']) + '\n')
+            except:
+                pass
+            try:
+                f.write('Roughness Correlation   ' + str(locals()['sectreactions'][0]['roughcorr']) + '\n')
+            except:
+                pass
 
-        write_line('\n[REACTIONS]\n')
-        write_line(';Reactions\n')
-        for i in range(len(locals()['sectreactions_I'])):
-            write_line('{}    {}    {} \n'.format(locals()['sectreactions_I'][i]['desc'],
-                                                  locals()['sectreactions_I'][i]['pipe/tank'],
-                                                  str(locals()['sectreactions_I'][i]['coeff.'])))
-        write_line('\n[EMITTERS]\n')
-        write_line(';Junction        	Coefficient\n')
+        f.write('\n[REACTIONS]\n')
+        f.write(';Reactions\n')
+        for i in range(len(locals()['sectreactions_i'])):
+            try:
+                f.write('{}    {}    {} \n'.format(locals()['sectreactions_I'][i]['desc'],
+                                                      locals()['sectreactions_I'][i]['pipe/tank'],
+                                                      str(locals()['sectreactions_I'][i]['coeff.'])))
+            except:
+                pass
+
+        f.write('\n[EMITTERS]\n')
+        f.write(';Junction        	Coefficient\n')
         for i in range(len(locals()['sectemitters'])):
-            write_line(
-                '{}    {}\n'.format(locals()['sectemitters'][i]['junc_id'], str(locals()['sectemitters'][i]['coeff.'])))
+            try:
+                f.write(
+                    '{}    {}\n'.format(locals()['sectemitters'][i]['junc_id'], str(locals()['sectemitters'][i]['coeff.'])))
+            except:
+                pass
 
-        write_line('\n[SOURCES]\n')
-        write_line(';Node            	Type        	Quality     	Pattern\n')
+        f.write('\n[SOURCES]\n')
+        f.write(';Node            	Type        	Quality     	Pattern\n')
         for i in range(len(locals()['sectsources'])):
             try:
                 locals()['sectsources'][i]['pattern'] = locals()['sectsources'][i]['pattern'] + ''
             except:
                 locals()['sectsources'][i]['pattern'] = ''
-            write_line(
+            f.write(
                 "{}   {}   {}   {}\n".format(locals()['sectsources'][i]['node_id'], locals()['sectsources'][i]['desc'],
                                              str(locals()['sectsources'][i]['strength']),
                                              locals()['sectsources'][i]['pattern']))
 
-        write_line('\n[MIXING]\n')
-        write_line(';Tank            	Model\n')
+        f.write('\n[MIXING]\n')
+        f.write(';Tank            	Model\n')
         for i in range(len(locals()['sectmixing'])):
-            write_line('{}    {}    {} \n'.format(locals()['sectmixing'][i]['tank_id'],
-                                                  locals()['sectmixing'][i]['model'],
-                                                  str(locals()['sectmixing'][i]['fraction'])))
+            try:
+                f.write('{}    {}    {} \n'.format(locals()['sectmixing'][i]['tank_id'],
+                                                      locals()['sectmixing'][i]['model'],
+                                                      str(locals()['sectmixing'][i]['fraction'])))
+            except:
+                pass
 
-        write_line('\n[TIMES]\n')
-        write_line(';Times\n')
+        f.write('\n[TIMES]\n')
+        f.write(';Times\n')
         if locals()['secttimes']:
-            write_line('Duration   ' + str(locals()['secttimes'][0]['duration']) + '\n')
-            write_line('Hydraulic Timestep    ' + str(locals()['secttimes'][0]['hydstep']) + '\n')
-            write_line('Quality Timestep   ' + str(locals()['secttimes'][0]['qualstep']) + '\n')
-            write_line('Pattern Timestep   ' + str(locals()['secttimes'][0]['patstep']) + '\n')
-            write_line('Pattern Start   ' + str(locals()['secttimes'][0]['patstart']) + '\n')
-            write_line('Report Timestep   ' + str(locals()['secttimes'][0]['repstep']) + '\n')
-            write_line('Report Start   ' + str(locals()['secttimes'][0]['repstart']) + '\n')
-            write_line('Start ClockTime   ' + str(locals()['secttimes'][0]['startclock']) + '\n')
-            write_line('Statistic   ' + str(locals()['secttimes'][0]['statistic']) + '\n')
+            try:
+                f.write('Duration   ' + str(locals()['secttimes'][0]['duration']) + '\n')
+            except:
+                pass
+            try:
+                f.write('Hydraulic Timestep    ' + str(locals()['secttimes'][0]['hydstep']) + '\n')
+            except:
+                pass
+            try:
+                f.write('Quality Timestep   ' + str(locals()['secttimes'][0]['qualstep']) + '\n')
+            except:
+                pass
+            try:
+                f.write('Pattern Timestep   ' + str(locals()['secttimes'][0]['patstep']) + '\n')
+            except:
+                pass
+            try:
+                f.write('Pattern Start   ' + str(locals()['secttimes'][0]['patstart']) + '\n')
+            except:
+                pass
+            try:
+                f.write('Report Timestep   ' + str(locals()['secttimes'][0]['repstep']) + '\n')
+            except:
+                pass
+            try:
+                f.write('Report Start   ' + str(locals()['secttimes'][0]['repstart']) + '\n')
+            except:
+                pass
+            try:
+                f.write('Start ClockTime   ' + str(locals()['secttimes'][0]['startclock']) + '\n')
+            except:
+                pass
+            try:
+                f.write('Statistic   ' + str(locals()['secttimes'][0]['statistic']) + '\n')
+            except:
+                pass
 
-        write_line('\n[REPORT]\n')
-        write_line(';Report\n')
+        f.write('\n[REPORT]\n')
+        f.write(';Report\n')
         if locals()['sectreport']:
-            write_line('Status   ' + locals()['sectreport'][0]['status'] + '\n')
-            write_line('Summary    ' + locals()['sectreport'][0]['summary'] + '\n')
-            write_line('Page   ' + locals()['sectreport'][0]['page'] + '\n')
+            try:
+                f.write('Status   ' + locals()['sectreport'][0]['status'] + '\n')
+                f.write('Summary    ' + locals()['sectreport'][0]['summary'] + '\n')
+                f.write('Page   ' + locals()['sectreport'][0]['page'] + '\n')
+            except:
+                pass
 
-        write_line('\n[OPTIONS]\n')
-        write_line(';Options\n')
+        f.write('\n[OPTIONS]\n')
+        f.write(';Options\n')
         if locals()['sectoptions']:
-            write_line('Units   ' + str(locals()['sectoptions'][0]['units']) + '\n')
-            write_line('Headloss    ' + str(locals()['sectoptions'][0]['headloss']) + '\n')
-            write_line('Specific Gravity   ' + str(locals()['sectoptions'][0]['specgrav']) + '\n')
-            write_line('Viscosity   ' + str(locals()['sectoptions'][0]['viscosity']) + '\n')
-            write_line('Trials   ' + str(locals()['sectoptions'][0]['trials']) + '\n')
-            write_line('Accuracy   ' + str(locals()['sectoptions'][0]['accuracy']) + '\n')
-            write_line('CHECKFREQ   ' + str(locals()['sectoptions'][0]['checkfreq']) + '\n')
-            write_line('MAXCHECK   ' + str(locals()['sectoptions'][0]['maxcheck']) + '\n')
-            write_line('DAMPLIMIT   ' + str(locals()['sectoptions'][0]['damplimit']) + '\n')
-            write_line('Unbalanced   ' + str(locals()['sectoptions'][0]['unbalanced']) + '\n')
-            write_line('Pattern   ' + str(locals()['sectoptions'][0]['patid']) + '\n')
-            write_line('Demand Multiplier   ' + str(locals()['sectoptions'][0]['demmult']) + '\n')
-            write_line('Emitter Exponent   ' + str(locals()['sectoptions'][0]['emitexp']) + '\n')
-            write_line('Quality   ' + str(locals()['sectoptions'][0]['quality']) + '\n')
-            write_line('Diffusivity   ' + str(locals()['sectoptions'][0]['diffusivit']) + '\n')
-            write_line('Tolerance   ' + str(locals()['sectoptions'][0]['tolerance']) + '\n')
+            try:
+                f.write('Units   ' + str(locals()['sectoptions'][0]['units']) + '\n')
+            except:
+                pass
+            try:
+                f.write('Headloss    ' + str(locals()['sectoptions'][0]['headloss']) + '\n')
+            except:
+                pass
+            try:
+                f.write('Specific Gravity   ' + str(locals()['sectoptions'][0]['specgrav']) + '\n')
+            except:
+                pass
+            try:
+                f.write('Viscosity   ' + str(locals()['sectoptions'][0]['viscosity']) + '\n')
+            except:
+                pass
+            try:
+                f.write('Trials   ' + str(locals()['sectoptions'][0]['trials']) + '\n')
+            except:
+                pass
+            try:
+                f.write('Accuracy   ' + str(locals()['sectoptions'][0]['accuracy']) + '\n')
+            except:
+                pass
+            try:
+                f.write('CHECKFREQ   ' + str(locals()['sectoptions'][0]['checkfreq']) + '\n')
+            except:
+                pass
+            try:
+                f.write('MAXCHECK   ' + str(locals()['sectoptions'][0]['maxcheck']) + '\n')
+            except:
+                pass
+            try:
+                f.write('DAMPLIMIT   ' + str(locals()['sectoptions'][0]['damplimit']) + '\n')
+            except:
+                pass
+            try:
+                f.write('Unbalanced   ' + str(locals()['sectoptions'][0]['unbalanced']) + '\n')
+            except:
+                pass
+            try:
+                f.write('Pattern   ' + str(locals()['sectoptions'][0]['patid']) + '\n')
+            except:
+                pass
+            try:
+                f.write('Demand Multiplier   ' + str(locals()['sectoptions'][0]['demmult']) + '\n')
+            except:
+                pass
+            try:
+                f.write('Emitter Exponent   ' + str(locals()['sectoptions'][0]['emitexp']) + '\n')
+            except:
+                pass
+            try:
+                f.write('Quality   ' + str(locals()['sectoptions'][0]['quality']) + '\n')
+            except:
+                pass
+            try:
+                f.write('Diffusivity   ' + str(locals()['sectoptions'][0]['diffusivit']) + '\n')
+            except:
+                pass
+            try:
+                f.write('Tolerance   ' + str(locals()['sectoptions'][0]['tolerance']) + '\n')
+            except:
+                pass
 
-        write_line('\n[COORDINATES]\n')
-        write_line(';Coordinates\n')
+        f.write('\n[COORDINATES]\n')
+        f.write(';Coordinates\n')
         for i in range(len(locals()['sectjunctions'])):
-            write_line(locals()['sectjunctions'][i]['id'] + '   ' + str(locals()['xyjunctions'][i][0]) + '   ' + str(
+            f.write(locals()['sectjunctions'][i]['id'] + '   ' + str(locals()['xyjunctions'][i][0]) + '   ' + str(
                 locals()['xyjunctions'][i][1]) + '\n')
         for i in range(len(locals()['sectreservoirs'])):
-            write_line(locals()['sectreservoirs'][i]['id'] + '   ' + str(locals()['xyreservoirs'][i][0]) + '   ' + str(
+            f.write(locals()['sectreservoirs'][i]['id'] + '   ' + str(locals()['xyreservoirs'][i][0]) + '   ' + str(
                 locals()['xyreservoirs'][i][1]) + '\n')
         for i in range(len(locals()['secttanks'])):
-            write_line(locals()['secttanks'][i]['id'] + '   ' + str(locals()['xytanks'][i][0]) + '   ' + str(
+            f.write(locals()['secttanks'][i]['id'] + '   ' + str(locals()['xytanks'][i][0]) + '   ' + str(
                 locals()['xytanks'][i][1]) + '\n')
 
-        write_line('\n[VERTICES]\n')
-        write_line(';Vertices\n')
+        f.write('\n[VERTICES]\n')
+        f.write(';Vertices\n')
 
         for i, id in enumerate(xypipes_id):
-            write_line(str(id) + '   ' + str(xypipesvert[i][0]) + '   ' + str(xypipesvert[i][1]) + '\n')
-        write_line('\n[END]\n')
+            f.write(str(id) + '   ' + str(xypipesvert[i][0]) + '   ' + str(xypipesvert[i][1]) + '\n')
+        f.write('\n[END]\n')
 
         f.close()
 
@@ -591,4 +720,7 @@ class ImpEpanet(object):
         msgBox.setText('Export Epanet Inp File "' + self.outEpanetName + '" succesful.')
         msgBox.exec_()
 
-        os.startfile(self.outEpanetName)
+        try:
+            os.startfile(self.outEpanetName)
+        except:
+            pass
