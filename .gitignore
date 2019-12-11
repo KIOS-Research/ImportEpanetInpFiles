@@ -1,7 +1,3 @@
 *.pyc
-Epa2GIS.py
 *.iml
 *.xml
-metadata.txt
-README.md
-main.py
