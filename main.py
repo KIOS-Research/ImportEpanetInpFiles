@@ -396,15 +396,22 @@ class ImpEpanet(object):
         f.write('\n[DEMANDS]\n')
         f.write(';Junction        	Demand      	Pattern         	Category\n')
         for i in range(len(locals()['sectjunctions'])):
-            for u in range(int((len(locals()['sectjunctions'][i]) - 2) / 2)):
-                if locals()['sectjunctions'][i]['Demand' + str(u + 1)] == 0 and str(
-                        locals()['sectjunctions'][i]['Pattern' + str(u + 1)]) == 'None':
-                    continue
-                if str(locals()['sectjunctions'][i]['Pattern' + str(u + 1)]) == 'NULL' or str(
-                        locals()['sectjunctions'][i]['Pattern' + str(u + 1)]) == 'None':
-                    locals()['sectjunctions'][i]['Pattern' + str(u + 1)] = ''
-                f.write(locals()['sectjunctions'][i]['ID'] + '   ' + str(locals()['sectjunctions'][i]['Demand' + str(u + 1)])
-                        + '   ' + str(locals()['sectjunctions'][i]['Pattern' + str(u + 1)]) + '\n')
+            u = 1
+            while True:
+                if ('Pattern'+str(u) in locals()['sectjunctions'][i]) and '(Demand'+str(u) in locals()['sectjunctions'][i]):
+                    if locals()['sectjunctions'][i]['Demand' + str(u)] == 0 and str(
+                            locals()['sectjunctions'][i]['Pattern' + str(u)]) == 'None':
+                        continue
+                    if str(locals()['sectjunctions'][i]['Pattern' + str(u)]) == 'NULL' or str(
+                            locals()['sectjunctions'][i]['Pattern' + str(u)]) == 'None':
+                        locals()['sectjunctions'][i]['Pattern' + str(u)] = ''
+                    f.write(locals()['sectjunctions'][i]['ID'] + '   ' + str(locals()['sectjunctions'][i]['Demand' + str(u)])
+                            + '   ' + str(locals()['sectjunctions'][i]['Pattern' + str(u)]) + '\n')
+                    u +=1
+                else:
+                    break
+                  
+                    
 
         f.write('\n[STATUS]\n')
         f.write(';ID              	Status/Setting\n')
