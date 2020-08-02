@@ -353,135 +353,135 @@ def epa2gis(inpname, epsg_crs):
         if i < allSections[0]:
             mm = energy[i][0]
             if mm.upper() == "GLOBAL":
-                prE.addAttributes([QgsField("Global" + energy[i][1], QVariant.String)])
+                prE.addAttributes([QgsField("global" + energy[i][1].lower(), QVariant.String)])
                 if len(energy[i]) > 2:
                     ppE.append(energy[i][2])
                 else:
                     ppE.append('')
             if mm.upper() == "PUMP":
-                prE.addAttributes([QgsField("Pump", QVariant.String)])
+                prE.addAttributes([QgsField("pump", QVariant.String)])
                 if len(energy[i]) > 2:
                     ppE.append(energy[i][1] + ' ' + energy[i][2])
                 else:
                     ppE.append(energy[i][1])
             elif mm.upper() == "DEMAND":
                 if energy[i][1].upper() == "CHARGE":
-                    prE.addAttributes([QgsField("DemCharge", QVariant.String)])
+                    prE.addAttributes([QgsField("demcharge", QVariant.String)])
                     if len(energy[i]) > 2:
                         ppE.append(energy[i][2])
         if i < allSections[1]:
             mm = optReactions[i][0]
             if mm.upper() == "ORDER":
-                prO.addAttributes([QgsField("Order" + optReactions[i][1], QVariant.String)])
+                prO.addAttributes([QgsField("order" + optReactions[i][1].lower(), QVariant.String)])
                 if len(optReactions[i]) > 2:
                     ppO.append(optReactions[i][2])
                 else:
                     ppO.append('')
             elif mm.upper() == "GLOBAL":
-                prO.addAttributes([QgsField("Global" + optReactions[i][1], QVariant.String)])
+                prO.addAttributes([QgsField("global" + optReactions[i][1].lower(), QVariant.String)])
                 if len(optReactions[i]) > 2:
                     ppO.append(optReactions[i][2])
                 else:
                     ppO.append('')
             elif mm.upper() == "BULK":
-                prO.addAttributes([QgsField("Bulk", QVariant.String)])
+                prO.addAttributes([QgsField("bulk", QVariant.String)])
                 if len(optReactions[i]) > 2:
                     ppO.append(optReactions[i][1] + ' ' + optReactions[i][2])
                 else:
                     ppO.append(optReactions[i][1])
             elif mm.upper() == "WALL":
-                prO.addAttributes([QgsField("Wall", QVariant.String)])
+                prO.addAttributes([QgsField("wall", QVariant.String)])
                 if len(optReactions[i]) > 2:
                     ppO.append(optReactions[i][1] + ' ' + optReactions[i][2])
                 else:
                     ppO.append(optReactions[i][1])
             elif mm.upper() == "TANK":
-                prO.addAttributes([QgsField("Tank", QVariant.String)])
+                prO.addAttributes([QgsField("tank", QVariant.String)])
                 if len(optReactions[i]) > 2:
                     ppO.append(optReactions[i][1] + ' ' + optReactions[i][2])
                 else:
                     ppO.append(optReactions[i][1])
             elif mm.upper() == "LIMITING":
                 if optReactions[i][1].upper() == "POTENTIAL":
-                    prO.addAttributes([QgsField("LimPotent", QVariant.String)])
+                    prO.addAttributes([QgsField("limpotent", QVariant.String)])
                     if len(optReactions[i]) > 2:
                         ppO.append(optReactions[i][2])
             elif mm.upper() == "ROUGHNESS":
                 if optReactions[i][1].upper() == "CORRELATION":
-                    prO.addAttributes([QgsField("RoughCorr", QVariant.String)])
+                    prO.addAttributes([QgsField("roughcorr", QVariant.String)])
                     if len(optReactions[i]) > 2:
                         ppO.append(optReactions[i][2])
         if i < allSections[13]:
             mm = times[i][0]
             if mm.upper() == "DURATION":
-                prTimes.addAttributes([QgsField("Duration", QVariant.String)])
+                prTimes.addAttributes([QgsField("duration", QVariant.String)])
                 ppTimes.append(times[i][1])
             if mm.upper() == "HYDRAULIC":
-                prTimes.addAttributes([QgsField("HydStep", QVariant.String)])
+                prTimes.addAttributes([QgsField("hydstep", QVariant.String)])
                 ppTimes.append(times[i][2])
             elif mm.upper() == "QUALITY":
-                prTimes.addAttributes([QgsField("QualStep", QVariant.String)])
+                prTimes.addAttributes([QgsField("qualstep", QVariant.String)])
                 ppTimes.append(times[i][2])
             elif mm.upper() == "RULE":
-                prTimes.addAttributes([QgsField("RuleStep", QVariant.String)])
+                prTimes.addAttributes([QgsField("rulestep", QVariant.String)])
                 ppTimes.append(times[i][2])
             elif mm.upper() == "PATTERN":
                 if times[i][1].upper() == "TIMESTEP":
-                    prTimes.addAttributes([QgsField("PatStep", QVariant.String)])
+                    prTimes.addAttributes([QgsField("patstep", QVariant.String)])
                     ppTimes.append(times[i][2])
                 if times[i][1].upper() == "START":
-                    prTimes.addAttributes([QgsField("PatStart", QVariant.String)])
+                    prTimes.addAttributes([QgsField("patstart", QVariant.String)])
                     ppTimes.append(times[i][2])
             elif mm.upper() == "REPORT":
                 if times[i][1].upper() == "TIMESTEP":
-                    prTimes.addAttributes([QgsField("RepStep", QVariant.String)])
+                    prTimes.addAttributes([QgsField("repstep", QVariant.String)])
                     ppTimes.append(times[i][2])
                 if times[i][1].upper() == "START":
-                    prTimes.addAttributes([QgsField("RepStart", QVariant.String)])
+                    prTimes.addAttributes([QgsField("repstart", QVariant.String)])
                     ppTimes.append(times[i][2])
             elif mm.upper() == "START":
                 if times[i][1].upper() == "CLOCKTIME":
-                    prTimes.addAttributes([QgsField("StartClock", QVariant.String)])
+                    prTimes.addAttributes([QgsField("startclock", QVariant.String)])
                     if len(times[i]) > 3:
                         ppTimes.append(times[i][2] + ' ' + times[i][3])
                     else:
                         ppTimes.append(times[i][2])
             elif mm.upper() == "STATISTIC":
-                prTimes.addAttributes([QgsField("Statistic", QVariant.String)])
+                prTimes.addAttributes([QgsField("statistic", QVariant.String)])
                 if times[i][1].upper() == 'NONE' or times[i][1].upper() == 'AVERAGE' or times[i][1].upper() \
                         == 'MINIMUM' or times[i][1].upper() == 'MAXIMUM' or times[i][1].upper() == 'RANGE':
                     ppTimes.append(times[i][1])
         if i < allSections[14]:
             mm = report[i][0]
             if mm.upper() == "PAGESIZE":
-                prRep.addAttributes([QgsField("PageSize", QVariant.String)])
+                prRep.addAttributes([QgsField("pagesize", QVariant.String)])
                 ppRep.append(report[i][1])
             if mm.upper() == "FILE":
-                prRep.addAttributes([QgsField("FileName", QVariant.String)])
+                prRep.addAttributes([QgsField("filename", QVariant.String)])
                 ppRep.append(report[i][1])
             elif mm.upper() == "STATUS":
-                prRep.addAttributes([QgsField("Status", QVariant.String)])
+                prRep.addAttributes([QgsField("status", QVariant.String)])
                 ppRep.append(report[i][1])
             elif mm.upper() == "SUMMARY":
-                prRep.addAttributes([QgsField("Summary", QVariant.String)])
+                prRep.addAttributes([QgsField("summary", QVariant.String)])
                 ppRep.append(report[i][1])
             elif mm.upper() == "ENERGY":
-                prRep.addAttributes([QgsField("Energy", QVariant.String)])
+                prRep.addAttributes([QgsField("energy", QVariant.String)])
                 ppRep.append(report[i][1])
             elif mm.upper() == "NODES":
-                prRep.addAttributes([QgsField("Nodes", QVariant.String)])
+                prRep.addAttributes([QgsField("nodes", QVariant.String)])
                 if len(report[i]) > 2:
                     ppRep.append(report[i][1] + ' ' + report[i][2])
                 else:
                     ppRep.append(report[i][1])
             elif mm.upper() == "LINKS":
-                prRep.addAttributes([QgsField("Links", QVariant.String)])
+                prRep.addAttributes([QgsField("links", QVariant.String)])
                 if len(report[i]) > 2:
                     ppRep.append(report[i][1] + ' ' + report[i][2])
                 else:
                     ppRep.append(report[i][1])
             else:
-                prRep.addAttributes([QgsField(mm, QVariant.String)])
+                prRep.addAttributes([QgsField(mm.lower(), QVariant.String)])
                 if len(report[i]) > 2:
                     ppRep.append(report[i][1] + ' ' + report[i][2])
                 else:
@@ -489,16 +489,16 @@ def epa2gis(inpname, epsg_crs):
         if i < allSections[15]:
             mm = options[i][0]
             if mm.upper() == "UNITS":
-                prOpt.addAttributes([QgsField("Units", QVariant.String)])
+                prOpt.addAttributes([QgsField("units", QVariant.String)])
                 ppOpt.append(options[i][1])
             if mm.upper() == "HYDRAULICS":
-                prOpt.addAttributes([QgsField("Hydraulics", QVariant.String)])
+                prOpt.addAttributes([QgsField("hydraulics", QVariant.String)])
                 if len(options[i]) > 2:
                     ppOpt.append(options[i][1] + ' ' + options[i][2])
                 else:
                     ppOpt.append(options[i][1])
             elif mm.upper() == "QUALITY":
-                prOpt.addAttributes([QgsField("Quality", QVariant.String)])
+                prOpt.addAttributes([QgsField("quality", QVariant.String)])
                 if len(options[i]) > 2:
                     ppOpt.append(options[i][1] + ' ' + options[i][2])
                 elif len(options[i]) > 3:
@@ -506,140 +506,140 @@ def epa2gis(inpname, epsg_crs):
                 else:
                     ppOpt.append(options[i][1])
             elif mm.upper() == "VISCOSITY":
-                prOpt.addAttributes([QgsField("Viscosity", QVariant.String)])
+                prOpt.addAttributes([QgsField("viscosity", QVariant.String)])
                 ppOpt.append(options[i][1])
             elif mm.upper() == "DIFFUSIVITY":
-                prOpt.addAttributes([QgsField("Diffusivity", QVariant.String)])
+                prOpt.addAttributes([QgsField("diffusivity", QVariant.String)])
                 ppOpt.append(options[i][1])
             elif mm.upper() == "SPECIFIC":
                 if options[i][1].upper() == "GRAVITY":
-                    prOpt.addAttributes([QgsField("SpecGrav", QVariant.String)])
+                    prOpt.addAttributes([QgsField("specgrav", QVariant.String)])
                     ppOpt.append(options[i][2])
             elif mm.upper() == "TRIALS":
-                prOpt.addAttributes([QgsField("Trials", QVariant.String)])
+                prOpt.addAttributes([QgsField("trials", QVariant.String)])
                 ppOpt.append(options[i][1])
             elif mm.upper() == "HEADLOSS":
-                prOpt.addAttributes([QgsField("Headloss", QVariant.String)])
+                prOpt.addAttributes([QgsField("headloss", QVariant.String)])
                 ppOpt.append(options[i][1])
             elif mm.upper() == "ACCURACY":
-                prOpt.addAttributes([QgsField("Accuracy", QVariant.String)])
+                prOpt.addAttributes([QgsField("accuracy", QVariant.String)])
                 ppOpt.append(options[i][1])
             elif mm.upper() == "UNBALANCED":
-                prOpt.addAttributes([QgsField("Unbalanced", QVariant.String)])
+                prOpt.addAttributes([QgsField("unbalanced", QVariant.String)])
                 if len(options[i]) > 2:
                     ppOpt.append(options[i][1] + ' ' + options[i][2])
                 else:
                     ppOpt.append(options[i][1])
             elif mm.upper() == "PATTERN":
-                prOpt.addAttributes([QgsField("PatID", QVariant.String)])
+                prOpt.addAttributes([QgsField("patid", QVariant.String)])
                 ppOpt.append(options[i][1])
             elif mm.upper() == "TOLERANCE":
-                prOpt.addAttributes([QgsField("Tolerance", QVariant.String)])
+                prOpt.addAttributes([QgsField("tolerance", QVariant.String)])
                 ppOpt.append(options[i][1])
             elif mm.upper() == "MAP":
-                prOpt.addAttributes([QgsField("Map", QVariant.String)])
+                prOpt.addAttributes([QgsField("map", QVariant.String)])
                 ppOpt.append(options[i][1])
             elif mm.upper() == "DEMAND":
                 if options[i][1].upper() == "MULTIPLIER":
-                    prOpt.addAttributes([QgsField("DemMult", QVariant.String)])
+                    prOpt.addAttributes([QgsField("demmult", QVariant.String)])
                     ppOpt.append(options[i][2])
             elif mm.upper() == "EMITTER":
                 if options[i][1].upper() == "EXPONENT":
-                    prOpt.addAttributes([QgsField("EmitExp", QVariant.String)])
+                    prOpt.addAttributes([QgsField("emitexp", QVariant.String)])
                     ppOpt.append(options[i][2])
             elif mm.upper() == "CHECKFREQ":
-                prOpt.addAttributes([QgsField("CheckFreq", QVariant.String)])
+                prOpt.addAttributes([QgsField("checkfreq", QVariant.String)])
                 ppOpt.append(options[i][1])
             elif mm.upper() == "MAXCHECK":
-                prOpt.addAttributes([QgsField("MaxCheck", QVariant.String)])
+                prOpt.addAttributes([QgsField("maxcheck", QVariant.String)])
                 ppOpt.append(options[i][1])
             elif mm.upper() == "DAMPLIMIT":
-                prOpt.addAttributes([QgsField("DampLimit", QVariant.String)])
+                prOpt.addAttributes([QgsField("damplimit", QVariant.String)])
                 ppOpt.append(options[i][1])
 
     try:
-        writeDBF(posOpt, [ppOpt], prOpt, saveFile, inpname, "_OPTIONS", idx)
+        writeDBF(posOpt, [ppOpt], prOpt, saveFile, inpname, "_options", idx)
 
-        writeDBF(posRep, [ppRep], prRep, saveFile, inpname, "_REPORT", idx)
+        writeDBF(posRep, [ppRep], prRep, saveFile, inpname, "_report", idx)
 
         #if times:
-        writeDBF(posTimes, [ppTimes], prTimes, saveFile, inpname, "_TIMES", idx)
+        writeDBF(posTimes, [ppTimes], prTimes, saveFile, inpname, "_times", idx)
 
         #if energy:
-        writeDBF(posE, [ppE], prE, saveFile, inpname, "_ENERGY", idx)
+        writeDBF(posE, [ppE], prE, saveFile, inpname, "_energy", idx)
 
         #if optReactions:
-        writeDBF(posO, [ppO], prO, saveFile, inpname, "_REACTIONS", idx)
+        writeDBF(posO, [ppO], prO, saveFile, inpname, "_reactions", idx)
 
         posMix = QgsVectorLayer("point?crs="+epsg_crs, "Mixing", "memory")
         prMix = posMix.dataProvider()
         fields = ["Tank_ID", "Model", "Fraction"]
         fieldsCode = [0, 0, 1]  # 0 String, 1 Double
         createColumnsAttrb(prMix, fields, fieldsCode)
-        writeDBF(posMix, ppMix, prMix, saveFile, inpname, "_MIXING", idx)
+        writeDBF(posMix, ppMix, prMix, saveFile, inpname, "_mixing", idx)
 
         posReact = QgsVectorLayer("point?crs="+epsg_crs, "ReactionsI", "memory")
         prReact = posReact.dataProvider()
         fields = ["Type", "Pipe/Tank", "Coeff."]
         fieldsCode = [0, 0, 1]
         createColumnsAttrb(prReact, fields, fieldsCode)
-        writeDBF(posReact, ppReactions, prReact, saveFile, inpname, "_REACTIONS_I", idx)
+        writeDBF(posReact, ppReactions, prReact, saveFile, inpname, "_reactions_i", idx)
 
         posSourc = QgsVectorLayer("point?crs="+epsg_crs, "Sources", "memory")
         prSourc = posSourc.dataProvider()
         fields = ["Node_ID", "Type", "Strength", "Pattern"]
         fieldsCode = [0, 0, 1, 0]
         createColumnsAttrb(prSourc, fields, fieldsCode)
-        writeDBF(posSourc, ppSourc, prSourc, saveFile, inpname, "_SOURCES", idx)
+        writeDBF(posSourc, ppSourc, prSourc, saveFile, inpname, "_sources", idx)
 
         posRul = QgsVectorLayer("point?crs="+epsg_crs, "Rules", "memory")
         prRul = posRul.dataProvider()
         fields = ["Rule_ID", "Rule"]
         fieldsCode = [0, 0]
         createColumnsAttrb(prRul, fields, fieldsCode)
-        writeDBF(posRul, ppRul, prRul, saveFile, inpname, "_RULES", idx)
+        writeDBF(posRul, ppRul, prRul, saveFile, inpname, "_rules", idx)
 
         posQual = QgsVectorLayer("point?crs="+epsg_crs, "Sources", "memory")
         prQual = posQual.dataProvider()
         fields = ["Node_ID", "Init_Qual"]
         fieldsCode = [0, 1]
         createColumnsAttrb(prQual, fields, fieldsCode)
-        writeDBF(posQual, ppQual, prQual, saveFile, inpname, "_QUALITY", idx)
+        writeDBF(posQual, ppQual, prQual, saveFile, inpname, "_quality", idx)
 
         posStat = QgsVectorLayer("point?crs="+epsg_crs, "Status", "memory")
         prStat = posStat.dataProvider()
         fields = ["Link_ID", "Status/Setting"]
         fieldsCode = [0, 0]
         createColumnsAttrb(prStat, fields, fieldsCode)
-        writeDBF(posStat, ppStat, prStat, saveFile, inpname, "_STATUS", idx)
+        writeDBF(posStat, ppStat, prStat, saveFile, inpname, "_status", idx)
 
         posEmit = QgsVectorLayer("point?crs="+epsg_crs, "Emitters", "memory")
         prEmit = posEmit.dataProvider()
         fields = ["Junc_ID", "Coeff."]
         fieldsCode = [0, 1]
         createColumnsAttrb(prEmit, fields, fieldsCode)
-        writeDBF(posEmit, ppEmit, prEmit, saveFile, inpname, "_EMITTERS", idx)
+        writeDBF(posEmit, ppEmit, prEmit, saveFile, inpname, "_emitters", idx)
 
         posCont = QgsVectorLayer("point?crs="+epsg_crs, "Controls", "memory")
         prCont = posCont.dataProvider()
         fields = ["Controls"]
         fieldsCode = [0]
         createColumnsAttrb(prCont, fields, fieldsCode)
-        writeDBF(posCont, ppCont, prCont, saveFile, inpname, "_CONTROLS", idx)
+        writeDBF(posCont, ppCont, prCont, saveFile, inpname, "_controls", idx)
 
         posPat = QgsVectorLayer("point?crs="+epsg_crs, "Patterns", "memory")
         prPat = posPat.dataProvider()
         fields = ["Pattern_ID", "Multipliers"]
         fieldsCode = [0, 0]
         createColumnsAttrb(prPat, fields, fieldsCode)
-        writeDBF(posPat, ppPat, prPat, saveFile, inpname, "_PATTERNS", idx)
+        writeDBF(posPat, ppPat, prPat, saveFile, inpname, "_patterns", idx)
 
         posCurv = QgsVectorLayer("point?crs="+epsg_crs, "Curves", "memory")
         prCurv = posCurv.dataProvider()
         fields = ["Curve_ID", "X-Value", "Y-Value", "Type"]
         fieldsCode = [0, 0, 0, 0]
         createColumnsAttrb(prCurv, fields, fieldsCode)
-        writeDBF(posCurv, ppCurv, prCurv, saveFile, inpname, "_CURVES", idx)
+        writeDBF(posCurv, ppCurv, prCurv, saveFile, inpname, "_curves", idx)
     except:
         pass
     
@@ -653,7 +653,6 @@ def epa2gis(inpname, epsg_crs):
     posValve.startEditing()
 
     if d.getBinLinkValveCount() > 0:
-
 
         linkID = d.getBinLinkValveNameID()
         linkType = d.getBinLinkValveType()  # valve type
@@ -783,7 +782,10 @@ def epa2gis(inpname, epsg_crs):
             feature.setAttribute(3, power)
             feature.setAttribute(4, pattern)
             feature.setAttribute(5, Curve)
-            feature.setAttribute(6, pumpdescription[i])
+            try:
+                feature.setAttribute(6, pumpdescription[i])
+            except:
+                pass
 
             if 'curveIndex' in locals():
                 if d.getBinCurveCount() == 1:
@@ -814,14 +816,13 @@ def epa2gis(inpname, epsg_crs):
 
     QgsVectorFileWriter.writeAsVectorFormat(posPipe,saveFile+"_pipes"+'.shp', "System",
                                             QgsCoordinateReferenceSystem(posPipe.crs().authid()), "ESRI Shapefile")
-    ll = QgsVectorLayer(saveFile + "_pipes" + '.shp', inpname[:len(inpname) - 4] + "_pipes", "ogr")
-    QgsProject.instance().addMapLayer(ll, False)
-    npipe = QgsLayerTreeLayer(ll)
+    pipelayer = QgsVectorLayer(saveFile + "_pipes" + '.shp', inpname[:len(inpname) - 4] + "_pipes", "ogr")
+    QgsProject.instance().addMapLayer(pipelayer, False)
+    npipe = QgsLayerTreeLayer(pipelayer)
     idx.insertChildNode(0, npipe)
     npipe.setCustomProperty("showFeatureCount", True)
-    ll.loadNamedStyle(plugin_path + "/qmls/" + 'pipes' + ".qml")
-    ll.triggerRepaint()
-    iface.mapCanvas().setExtent(ll.extent())
+    pipelayer.loadNamedStyle(plugin_path + "/qmls/" + 'pipes' + ".qml")
+    pipelayer.triggerRepaint()
 
     QgsVectorFileWriter.writeAsVectorFormat(posJunction,saveFile+"_junctions"+'.shp', "System",
                                             QgsCoordinateReferenceSystem(posJunction.crs().authid()), "ESRI Shapefile")
@@ -853,6 +854,8 @@ def epa2gis(inpname, epsg_crs):
     ll.loadNamedStyle(plugin_path + "/qmls/" + 'reservoirs' + ".qml")
     ll.triggerRepaint()
 
+    iface.setActiveLayer(pipelayer)
+    iface.zoomToActiveLayer()
 
 def writeDBF(pos, pp, pr, save_file, inpname, param, idx):
     pos.startEditing()
@@ -873,6 +876,6 @@ def writeDBF(pos, pp, pr, save_file, inpname, param, idx):
 def createColumnsAttrb(pr, fields, fields_code):
     for i in range(len(fields_code)):
         if fields_code[i] == 0:
-            pr.addAttributes([QgsField(fields[i], QVariant.String)])
+            pr.addAttributes([QgsField(fields[i].lower(), QVariant.String)])
         else:
-            pr.addAttributes([QgsField(fields[i], QVariant.Double, 'double', 20, 6)])
+            pr.addAttributes([QgsField(fields[i].lower(), QVariant.Double, 'double', 20, 6)])
