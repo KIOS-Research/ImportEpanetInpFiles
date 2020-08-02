@@ -654,7 +654,6 @@ def epa2gis(inpname, epsg_crs):
 
     if d.getBinLinkValveCount() > 0:
 
-
         linkID = d.getBinLinkValveNameID()
         linkType = d.getBinLinkValveType()  # valve type
         linkDiameter = d.getBinLinkValveDiameters()
@@ -817,14 +816,13 @@ def epa2gis(inpname, epsg_crs):
 
     QgsVectorFileWriter.writeAsVectorFormat(posPipe,saveFile+"_pipes"+'.shp', "System",
                                             QgsCoordinateReferenceSystem(posPipe.crs().authid()), "ESRI Shapefile")
-    ll = QgsVectorLayer(saveFile + "_pipes" + '.shp', inpname[:len(inpname) - 4] + "_pipes", "ogr")
-    QgsProject.instance().addMapLayer(ll, False)
-    npipe = QgsLayerTreeLayer(ll)
+    pipelayer = QgsVectorLayer(saveFile + "_pipes" + '.shp', inpname[:len(inpname) - 4] + "_pipes", "ogr")
+    QgsProject.instance().addMapLayer(pipelayer, False)
+    npipe = QgsLayerTreeLayer(pipelayer)
     idx.insertChildNode(0, npipe)
     npipe.setCustomProperty("showFeatureCount", True)
-    ll.loadNamedStyle(plugin_path + "/qmls/" + 'pipes' + ".qml")
-    ll.triggerRepaint()
-    iface.mapCanvas().setExtent(ll.extent())
+    pipelayer.loadNamedStyle(plugin_path + "/qmls/" + 'pipes' + ".qml")
+    pipelayer.triggerRepaint()
 
     QgsVectorFileWriter.writeAsVectorFormat(posJunction,saveFile+"_junctions"+'.shp', "System",
                                             QgsCoordinateReferenceSystem(posJunction.crs().authid()), "ESRI Shapefile")
@@ -856,6 +854,8 @@ def epa2gis(inpname, epsg_crs):
     ll.loadNamedStyle(plugin_path + "/qmls/" + 'reservoirs' + ".qml")
     ll.triggerRepaint()
 
+    iface.setActiveLayer(pipelayer)
+    iface.zoomToActiveLayer()
 
 def writeDBF(pos, pp, pr, save_file, inpname, param, idx):
     pos.startEditing()
