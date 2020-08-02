@@ -430,7 +430,7 @@ class ImpEpanet(object):
         for i in range(len(locals()['sectjunctions'])):
             u = 1
             while True:
-                if ('Pattern'+str(u) in locals()['sectjunctions'][i]) and '(Demand'+str(u) in locals()['sectjunctions'][i]):
+                if ('Pattern'+str(u) in locals()['sectjunctions'][i]) and ('Demand'+str(u) in locals()['sectjunctions'][i]):
                     if locals()['sectjunctions'][i]['Demand' + str(u)] == 0 and str(
                             locals()['sectjunctions'][i]['Pattern' + str(u)]) == 'None':
                         continue
@@ -439,7 +439,7 @@ class ImpEpanet(object):
                         locals()['sectjunctions'][i]['Pattern' + str(u)] = ''
                     f.write(locals()['sectjunctions'][i]['ID'] + '   ' + str(locals()['sectjunctions'][i]['Demand' + str(u)])
                             + '   ' + str(locals()['sectjunctions'][i]['Pattern' + str(u)]) + '\n')
-                    u +=1
+                    u += 1
                 else:
                     break
 
