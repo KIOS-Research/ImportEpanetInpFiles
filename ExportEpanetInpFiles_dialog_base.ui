@@ -187,7 +187,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QComboBox" name="sect_STATUS">
+  <widget class="QComboBox" name="sect_status">
    <property name="geometry">
     <rect>
      <x>110</x>
@@ -216,7 +216,7 @@
     <string>[STATUS] : </string>
    </property>
   </widget>
-  <widget class="QComboBox" name="sect_PATTERNS">
+  <widget class="QComboBox" name="sect_patterns">
    <property name="geometry">
     <rect>
      <x>110</x>
@@ -245,7 +245,7 @@
     <string>[PATTERNS] : </string>
    </property>
   </widget>
-  <widget class="QComboBox" name="sect_CURVES">
+  <widget class="QComboBox" name="sect_curves">
    <property name="geometry">
     <rect>
      <x>110</x>
@@ -274,7 +274,7 @@
     <string>[CURVES] : </string>
    </property>
   </widget>
-  <widget class="QComboBox" name="sect_CONTROLS">
+  <widget class="QComboBox" name="sect_controls">
    <property name="geometry">
     <rect>
      <x>110</x>
@@ -303,7 +303,7 @@
     <string>[CONTROLS] : </string>
    </property>
   </widget>
-  <widget class="QComboBox" name="sect_RULES">
+  <widget class="QComboBox" name="sect_rules">
    <property name="geometry">
     <rect>
      <x>110</x>
@@ -332,7 +332,7 @@
     <string>[RULES] : </string>
    </property>
   </widget>
-  <widget class="QComboBox" name="sect_ENERGY">
+  <widget class="QComboBox" name="sect_energy">
    <property name="geometry">
     <rect>
      <x>110</x>
@@ -361,7 +361,7 @@
     <string>[ENERGY] : </string>
    </property>
   </widget>
-  <widget class="QComboBox" name="sect_EMITTERS">
+  <widget class="QComboBox" name="sect_emitters">
    <property name="geometry">
     <rect>
      <x>110</x>
@@ -390,7 +390,7 @@
     <string>[EMITTERS] : </string>
    </property>
   </widget>
-  <widget class="QComboBox" name="sect_QUALITY">
+  <widget class="QComboBox" name="sect_quality">
    <property name="geometry">
     <rect>
      <x>110</x>
@@ -419,7 +419,7 @@
     <string>[QUALITY] : </string>
    </property>
   </widget>
-  <widget class="QComboBox" name="sect_SOURCES">
+  <widget class="QComboBox" name="sect_sources">
    <property name="geometry">
     <rect>
      <x>110</x>
@@ -448,7 +448,7 @@
     <string>[SOURCES] : </string>
    </property>
   </widget>
-  <widget class="QComboBox" name="sect_REACTIONS">
+  <widget class="QComboBox" name="sect_reactions">
    <property name="geometry">
     <rect>
      <x>110</x>
@@ -477,7 +477,7 @@
     <string>[REACTIONS] : </string>
    </property>
   </widget>
-  <widget class="QComboBox" name="sect_MIXING">
+  <widget class="QComboBox" name="sect_mixing">
    <property name="geometry">
     <rect>
      <x>110</x>
@@ -506,7 +506,7 @@
     <string>[MIXING] : </string>
    </property>
   </widget>
-  <widget class="QComboBox" name="sect_OPTIONS">
+  <widget class="QComboBox" name="sect_options">
    <property name="geometry">
     <rect>
      <x>110</x>
@@ -535,7 +535,7 @@
     <string>[OPTIONS] : </string>
    </property>
   </widget>
-  <widget class="QComboBox" name="sect_TIMES">
+  <widget class="QComboBox" name="sect_times">
    <property name="geometry">
     <rect>
      <x>110</x>
@@ -564,7 +564,7 @@
     <string>[TIMES] : </string>
    </property>
   </widget>
-  <widget class="QComboBox" name="sect_REPORT">
+  <widget class="QComboBox" name="sect_report">
    <property name="geometry">
     <rect>
      <x>110</x>
@@ -686,7 +686,7 @@
     <string>[REACTIONS_I] : </string>
    </property>
   </widget>
-  <widget class="QComboBox" name="sect_REACTIONS_I">
+  <widget class="QComboBox" name="sect_reactions_i">
    <property name="geometry">
     <rect>
      <x>110</x>

@@ -453,7 +453,7 @@ def getBinInfo():
 
     nodeJunctionNameID = []
     nodeJunctionElevations = []
-    nodeJunctionDescription = []
+    nodeJunctionDescription = ['']
     nodeJunctionBaseDemands = []
 
     nodeJunctionsDemSection = []
@@ -463,7 +463,7 @@ def getBinInfo():
     nodePatternNameID = []
     nodeReservoirNameID = []
     nodeReservoirElevations = []
-    nodeReservoirDescription = []
+    nodeReservoirDescription = ['']
 
     BinNodeTankNameID = []
     BinNodeTankElevation = []
@@ -473,7 +473,7 @@ def getBinInfo():
     BinNodeTankDiameter = []
     BinNodeTankMinVol = []
     BinNodeTankVolumeCurveID = []
-    BinNodeTankDescription = []
+    BinNodeTankDescription = ['']
 
     BinLinkPipeNameID = []
     BinLinkFromNode = []
@@ -482,7 +482,7 @@ def getBinInfo():
     BinLinkPipeDiameters = []
     BinLinkPipeRoughness = []
     BinLinkPipeMinorLoss = []
-    BinLinkPipeDescription = []
+    BinLinkPipeDescription = ['']
 
     BinLinkPumpPatterns = []
     BinLinkPumpCurveNameID = []
@@ -491,7 +491,7 @@ def getBinInfo():
     BinLinkPumpNameID = []
     BinLinkPumpSpeed = []
     BinLinkPumpPatternsPumpID = []
-    BinLinkPumpDescription = []
+    BinLinkPumpDescription = ['']
 
 
     BinLinkValveNameID = []
@@ -499,7 +499,7 @@ def getBinInfo():
     BinLinkValveType = []
     BinLinkValveSetting = []
     BinLinkValveMinorLoss = []
-    BinLinkValveDescription = []
+    BinLinkValveDescription = ['']
 
     BinLinkInitialStatus = []
     BinLinkInitialStatusNameID = []

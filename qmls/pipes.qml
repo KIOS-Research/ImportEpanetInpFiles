@@ -1,78 +1,35 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis simplifyDrawingHints="1" minScale="1e+8" simplifyLocal="1" maxScale="0" simplifyAlgorithm="0" labelsEnabled="0" simplifyMaxScale="1" simplifyDrawingTol="1" readOnly="0" version="3.0.0-Girona" hasScaleBasedVisibilityFlag="0">
-  <renderer-v2 type="singleSymbol" symbollevels="0" enableorderby="0" forceraster="0">
+<qgis readOnly="0" hasScaleBasedVisibilityFlag="0" maxScale="0" simplifyAlgorithm="0" version="3.10.0-A CoruÃ±a" labelsEnabled="0" simplifyMaxScale="1" simplifyDrawingHints="1" simplifyLocal="1" minScale="1e+08" simplifyDrawingTol="1" styleCategories="AllStyleCategories">
+  <flags>
+    <Identifiable>1</Identifiable>
+    <Removable>1</Removable>
+    <Searchable>1</Searchable>
+  </flags>
+  <renderer-v2 type="singleSymbol" forceraster="0" symbollevels="0" enableorderby="0">
     <symbols>
-      <symbol clip_to_extent="1" type="line" name="0" alpha="1">
-        <layer pass="0" locked="0" enabled="1" class="MarkerLine">
-          <prop v="48" k="interval"/>
-          <prop v="3x:0,0,0,0,0,0" k="interval_map_unit_scale"/>
-          <prop v="MM" k="interval_unit"/>
-          <prop v="0" k="offset"/>
-          <prop v="0" k="offset_along_line"/>
-          <prop v="3x:0,0,0,0,0,0" k="offset_along_line_map_unit_scale"/>
-          <prop v="MM" k="offset_along_line_unit"/>
-          <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
-          <prop v="MM" k="offset_unit"/>
-          <prop v="interval" k="placement"/>
-          <prop v="1" k="rotate"/>
+      <symbol type="line" force_rhr="0" alpha="1" name="0" clip_to_extent="1">
+        <layer class="SimpleLine" enabled="1" pass="0" locked="0">
+          <prop k="capstyle" v="square"/>
+          <prop k="customdash" v="5;2"/>
+          <prop k="customdash_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="customdash_unit" v="MM"/>
+          <prop k="draw_inside_polygon" v="0"/>
+          <prop k="joinstyle" v="bevel"/>
+          <prop k="line_color" v="0,85,255,255"/>
+          <prop k="line_style" v="solid"/>
+          <prop k="line_width" v="0.26"/>
+          <prop k="line_width_unit" v="MM"/>
+          <prop k="offset" v="0"/>
+          <prop k="offset_map_unit_scale" v="3x:0,0,0,0,0,0"/>
+          <prop k="offset_unit" v="MM"/>
+          <prop k="ring_filter" v="0"/>
+          <prop k="use_custom_dash" v="0"/>
+          <prop k="width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
           <data_defined_properties>
             <Option type="Map">
-              <Option type="QString" name="name" value=""/>
+              <Option type="QString" value="" name="name"/>
               <Option name="properties"/>
-              <Option type="QString" name="type" value="collection"/>
-            </Option>
-          </data_defined_properties>
-          <symbol clip_to_extent="1" type="marker" name="@0@0" alpha="1">
-            <layer pass="0" locked="0" enabled="1" class="SimpleMarker">
-              <prop v="0" k="angle"/>
-              <prop v="0,85,255,255" k="color"/>
-              <prop v="1" k="horizontal_anchor_point"/>
-              <prop v="bevel" k="joinstyle"/>
-              <prop v="arrowhead" k="name"/>
-              <prop v="0,0" k="offset"/>
-              <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
-              <prop v="MM" k="offset_unit"/>
-              <prop v="0,85,255,255" k="outline_color"/>
-              <prop v="solid" k="outline_style"/>
-              <prop v="0" k="outline_width"/>
-              <prop v="3x:0,0,0,0,0,0" k="outline_width_map_unit_scale"/>
-              <prop v="MM" k="outline_width_unit"/>
-              <prop v="area" k="scale_method"/>
-              <prop v="2" k="size"/>
-              <prop v="3x:0,0,0,0,0,0" k="size_map_unit_scale"/>
-              <prop v="MM" k="size_unit"/>
-              <prop v="1" k="vertical_anchor_point"/>
-              <data_defined_properties>
-                <Option type="Map">
-                  <Option type="QString" name="name" value=""/>
-                  <Option name="properties"/>
-                  <Option type="QString" name="type" value="collection"/>
-                </Option>
-              </data_defined_properties>
-            </layer>
-          </symbol>
-        </layer>
-        <layer pass="0" locked="0" enabled="1" class="SimpleLine">
-          <prop v="square" k="capstyle"/>
-          <prop v="5;2" k="customdash"/>
-          <prop v="3x:0,0,0,0,0,0" k="customdash_map_unit_scale"/>
-          <prop v="MM" k="customdash_unit"/>
-          <prop v="0" k="draw_inside_polygon"/>
-          <prop v="bevel" k="joinstyle"/>
-          <prop v="0,85,255,255" k="line_color"/>
-          <prop v="solid" k="line_style"/>
-          <prop v="0.26" k="line_width"/>
-          <prop v="MM" k="line_width_unit"/>
-          <prop v="0" k="offset"/>
-          <prop v="3x:0,0,0,0,0,0" k="offset_map_unit_scale"/>
-          <prop v="MM" k="offset_unit"/>
-          <prop v="0" k="use_custom_dash"/>
-          <prop v="3x:0,0,0,0,0,0" k="width_map_unit_scale"/>
-          <data_defined_properties>
-            <Option type="Map">
-              <Option type="QString" name="name" value=""/>
-              <Option name="properties"/>
-              <Option type="QString" name="type" value="collection"/>
+              <Option type="QString" value="collection" name="type"/>
             </Option>
           </data_defined_properties>
         </layer>
@@ -82,108 +39,139 @@
     <sizescale/>
   </renderer-v2>
   <labeling type="simple">
-    <settings>
-      <text-style fontCapitals="0" textColor="0,85,255,255" blendMode="0" previewBkgrdColor="#ffffff" multilineHeight="1" fontLetterSpacing="0" fieldName="dc_id" fontFamily="MS Shell Dlg 2" fontSizeMapUnitScale="3x:0,0,0,0,0,0" namedStyle="Κανονικά" fontItalic="0" fontWeight="50" fontStrikeout="0" textOpacity="1" isExpression="1" fontSizeUnit="Point" useSubstitutions="0" fontWordSpacing="0" fontUnderline="0" fontSize="11">
-        <text-buffer bufferNoFill="0" bufferSizeUnits="MM" bufferBlendMode="0" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferDraw="0" bufferColor="255,255,255,255" bufferSize="1" bufferOpacity="1" bufferJoinStyle="64"/>
-        <background shapeOffsetUnit="MM" shapeRotation="0" shapeBorderWidthMapUnitScale="3x:0,0,0,0,0,0" shapeOpacity="1" shapeRadiiMapUnitScale="3x:0,0,0,0,0,0" shapeOffsetY="0" shapeSizeX="0" shapeJoinStyle="64" shapeBorderColor="128,128,128,255" shapeSizeY="0" shapeSVGFile="" shapeBorderWidth="0" shapeSizeUnit="MM" shapeRadiiY="0" shapeSizeMapUnitScale="3x:0,0,0,0,0,0" shapeOffsetX="0" shapeBorderWidthUnit="MM" shapeRadiiUnit="MM" shapeFillColor="255,255,255,255" shapeRadiiX="0" shapeType="0" shapeBlendMode="0" shapeDraw="0" shapeOffsetMapUnitScale="3x:0,0,0,0,0,0" shapeSizeType="0" shapeRotationType="0"/>
-        <shadow shadowRadiusUnit="MM" shadowOpacity="0.7" shadowDraw="0" shadowOffsetDist="1" shadowBlendMode="6" shadowRadius="1.5" shadowRadiusMapUnitScale="3x:0,0,0,0,0,0" shadowRadiusAlphaOnly="0" shadowOffsetGlobal="1" shadowScale="100" shadowOffsetMapUnitScale="3x:0,0,0,0,0,0" shadowUnder="0" shadowColor="0,0,0,255" shadowOffsetAngle="135" shadowOffsetUnit="MM"/>
+    <settings calloutType="simple">
+      <text-style previewBkgrdColor="255,255,255,255" fontUnderline="0" multilineHeight="1" useSubstitutions="0" fontSize="11" fontWordSpacing="0" blendMode="0" textOrientation="horizontal" fontSizeMapUnitScale="3x:0,0,0,0,0,0" fontKerning="1" fontWeight="50" namedStyle="Κανονικά" textOpacity="1" fontSizeUnit="Point" textColor="0,85,255,255" fieldName="dc_id" fontLetterSpacing="0" fontFamily="MS Shell Dlg 2" fontStrikeout="0" isExpression="1" fontCapitals="0" fontItalic="0">
+        <text-buffer bufferColor="255,255,255,255" bufferSizeMapUnitScale="3x:0,0,0,0,0,0" bufferBlendMode="0" bufferOpacity="1" bufferNoFill="0" bufferJoinStyle="64" bufferDraw="0" bufferSize="1" bufferSizeUnits="MM"/>
+        <background shapeOffsetX="0" shapeOffsetMapUnitScale="3x:0,0,0,0,0,0" shapeBorderWidthMapUnitScale="3x:0,0,0,0,0,0" shapeOpacity="1" shapeSizeY="0" shapeBorderColor="128,128,128,255" shapeBorderWidthUnit="MM" shapeRadiiUnit="MM" shapeDraw="0" shapeSVGFile="" shapeBlendMode="0" shapeType="0" shapeRotation="0" shapeSizeType="0" shapeFillColor="255,255,255,255" shapeRadiiY="0" shapeRadiiX="0" shapeSizeUnit="MM" shapeBorderWidth="0" shapeOffsetUnit="MM" shapeSizeX="0" shapeOffsetY="0" shapeRotationType="0" shapeRadiiMapUnitScale="3x:0,0,0,0,0,0" shapeJoinStyle="64" shapeSizeMapUnitScale="3x:0,0,0,0,0,0"/>
+        <shadow shadowOffsetGlobal="1" shadowOffsetDist="1" shadowOffsetMapUnitScale="3x:0,0,0,0,0,0" shadowRadiusAlphaOnly="0" shadowBlendMode="6" shadowOffsetUnit="MM" shadowScale="100" shadowRadius="1.5" shadowRadiusUnit="MM" shadowRadiusMapUnitScale="3x:0,0,0,0,0,0" shadowDraw="0" shadowUnder="0" shadowOffsetAngle="135" shadowOpacity="0.7" shadowColor="0,0,0,255"/>
+        <dd_properties>
+          <Option type="Map">
+            <Option type="QString" value="" name="name"/>
+            <Option name="properties"/>
+            <Option type="QString" value="collection" name="type"/>
+          </Option>
+        </dd_properties>
         <substitutions/>
       </text-style>
-      <text-format multilineAlign="0" addDirectionSymbol="0" wrapChar="" rightDirectionSymbol=">" placeDirectionSymbol="0" decimals="3" plussign="0" leftDirectionSymbol="&lt;" formatNumbers="0" reverseDirectionSymbol="0"/>
-      <placement centroidInside="0" rotationAngle="0" labelOffsetMapUnitScale="3x:0,0,0,0,0,0" centroidWhole="0" placementFlags="10" offsetType="0" placement="2" fitInPolygonOnly="0" maxCurvedCharAngleOut="-20" yOffset="0" preserveRotation="1" repeatDistance="0" offsetUnits="MapUnit" maxCurvedCharAngleIn="20" repeatDistanceUnits="MM" priority="5" predefinedPositionOrder="TR,TL,BR,BL,R,L,TSR,BSR" repeatDistanceMapUnitScale="3x:0,0,0,0,0,0" distMapUnitScale="3x:0,0,0,0,0,0" quadOffset="4" xOffset="0" distUnits="MM" dist="0"/>
-      <rendering fontMaxPixelSize="10000" scaleMax="10000000" upsidedownLabels="0" obstacle="1" mergeLines="0" drawLabels="1" maxNumLabels="2000" fontLimitPixelSize="0" fontMinPixelSize="3" labelPerPart="0" minFeatureSize="0" obstacleFactor="1" displayAll="0" scaleVisibility="0" obstacleType="0" zIndex="0" scaleMin="1" limitNumLabels="0"/>
+      <text-format rightDirectionSymbol=">" useMaxLineLengthForAutoWrap="1" leftDirectionSymbol="&lt;" wrapChar="" plussign="0" formatNumbers="0" addDirectionSymbol="0" autoWrapLength="0" multilineAlign="0" placeDirectionSymbol="0" reverseDirectionSymbol="0" decimals="3"/>
+      <placement quadOffset="4" offsetType="0" rotationAngle="0" dist="0" maxCurvedCharAngleIn="20" preserveRotation="1" distUnits="MM" centroidWhole="0" geometryGenerator="" fitInPolygonOnly="0" placement="2" centroidInside="0" overrunDistanceUnit="MM" xOffset="0" geometryGeneratorType="PointGeometry" priority="5" predefinedPositionOrder="TR,TL,BR,BL,R,L,TSR,BSR" yOffset="0" labelOffsetMapUnitScale="3x:0,0,0,0,0,0" overrunDistanceMapUnitScale="3x:0,0,0,0,0,0" offsetUnits="MapUnit" layerType="UnknownGeometry" distMapUnitScale="3x:0,0,0,0,0,0" maxCurvedCharAngleOut="-20" repeatDistanceUnits="MM" overrunDistance="0" placementFlags="10" geometryGeneratorEnabled="0" repeatDistance="0" repeatDistanceMapUnitScale="3x:0,0,0,0,0,0"/>
+      <rendering obstacleFactor="1" fontMaxPixelSize="10000" upsidedownLabels="0" limitNumLabels="0" obstacle="1" obstacleType="0" fontMinPixelSize="3" displayAll="0" scaleMax="10000000" labelPerPart="0" mergeLines="0" scaleMin="1" zIndex="0" maxNumLabels="2000" drawLabels="1" minFeatureSize="0" scaleVisibility="0" fontLimitPixelSize="0"/>
       <dd_properties>
         <Option type="Map">
-          <Option type="QString" name="name" value=""/>
+          <Option type="QString" value="" name="name"/>
           <Option name="properties"/>
-          <Option type="QString" name="type" value="collection"/>
+          <Option type="QString" value="collection" name="type"/>
         </Option>
       </dd_properties>
+      <callout type="simple">
+        <Option type="Map">
+          <Option type="QString" value="pole_of_inaccessibility" name="anchorPoint"/>
+          <Option type="Map" name="ddProperties">
+            <Option type="QString" value="" name="name"/>
+            <Option name="properties"/>
+            <Option type="QString" value="collection" name="type"/>
+          </Option>
+          <Option type="bool" value="false" name="drawToAllParts"/>
+          <Option type="QString" value="0" name="enabled"/>
+          <Option type="QString" value="&lt;symbol type=&quot;line&quot; force_rhr=&quot;0&quot; alpha=&quot;1&quot; name=&quot;symbol&quot; clip_to_extent=&quot;1&quot;>&lt;layer class=&quot;SimpleLine&quot; enabled=&quot;1&quot; pass=&quot;0&quot; locked=&quot;0&quot;>&lt;prop k=&quot;capstyle&quot; v=&quot;square&quot;/>&lt;prop k=&quot;customdash&quot; v=&quot;5;2&quot;/>&lt;prop k=&quot;customdash_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;customdash_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;draw_inside_polygon&quot; v=&quot;0&quot;/>&lt;prop k=&quot;joinstyle&quot; v=&quot;bevel&quot;/>&lt;prop k=&quot;line_color&quot; v=&quot;60,60,60,255&quot;/>&lt;prop k=&quot;line_style&quot; v=&quot;solid&quot;/>&lt;prop k=&quot;line_width&quot; v=&quot;0.3&quot;/>&lt;prop k=&quot;line_width_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;offset&quot; v=&quot;0&quot;/>&lt;prop k=&quot;offset_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;prop k=&quot;offset_unit&quot; v=&quot;MM&quot;/>&lt;prop k=&quot;ring_filter&quot; v=&quot;0&quot;/>&lt;prop k=&quot;use_custom_dash&quot; v=&quot;0&quot;/>&lt;prop k=&quot;width_map_unit_scale&quot; v=&quot;3x:0,0,0,0,0,0&quot;/>&lt;data_defined_properties>&lt;Option type=&quot;Map&quot;>&lt;Option type=&quot;QString&quot; value=&quot;&quot; name=&quot;name&quot;/>&lt;Option name=&quot;properties&quot;/>&lt;Option type=&quot;QString&quot; value=&quot;collection&quot; name=&quot;type&quot;/>&lt;/Option>&lt;/data_defined_properties>&lt;/layer>&lt;/symbol>" name="lineSymbol"/>
+          <Option type="double" value="0" name="minLength"/>
+          <Option type="QString" value="3x:0,0,0,0,0,0" name="minLengthMapUnitScale"/>
+          <Option type="QString" value="MM" name="minLengthUnit"/>
+          <Option type="double" value="0" name="offsetFromAnchor"/>
+          <Option type="QString" value="3x:0,0,0,0,0,0" name="offsetFromAnchorMapUnitScale"/>
+          <Option type="QString" value="MM" name="offsetFromAnchorUnit"/>
+          <Option type="double" value="0" name="offsetFromLabel"/>
+          <Option type="QString" value="3x:0,0,0,0,0,0" name="offsetFromLabelMapUnitScale"/>
+          <Option type="QString" value="MM" name="offsetFromLabelUnit"/>
+        </Option>
+      </callout>
     </settings>
   </labeling>
   <customproperties>
-    <property key="embeddedWidgets/count" value="0"/>
+    <property value="0" key="embeddedWidgets/count"/>
     <property key="variableNames"/>
     <property key="variableValues"/>
   </customproperties>
   <blendMode>0</blendMode>
   <featureBlendMode>0</featureBlendMode>
   <layerOpacity>1</layerOpacity>
-  <SingleCategoryDiagramRenderer attributeLegend="1" diagramType="Histogram">
-    <DiagramCategory width="15" penColor="#000000" labelPlacementMethod="XHeight" enabled="0" sizeScale="3x:0,0,0,0,0,0" minimumSize="0" maxScaleDenominator="1e+8" backgroundAlpha="255" diagramOrientation="Up" lineSizeType="MM" rotationOffset="270" barWidth="5" penWidth="0" scaleBasedVisibility="0" backgroundColor="#ffffff" lineSizeScale="3x:0,0,0,0,0,0" scaleDependency="Area" height="15" minScaleDenominator="0" penAlpha="255" opacity="1" sizeType="MM">
-      <fontProperties description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0" style=""/>
-      <attribute label="" field="" color="#000000"/>
+  <SingleCategoryDiagramRenderer diagramType="Histogram" attributeLegend="1">
+    <DiagramCategory backgroundAlpha="255" penAlpha="255" penWidth="0" lineSizeScale="3x:0,0,0,0,0,0" opacity="1" penColor="#000000" height="15" enabled="0" lineSizeType="MM" backgroundColor="#ffffff" rotationOffset="270" maxScaleDenominator="1e+08" minScaleDenominator="0" scaleBasedVisibility="0" diagramOrientation="Up" scaleDependency="Area" barWidth="5" labelPlacementMethod="XHeight" sizeScale="3x:0,0,0,0,0,0" width="15" sizeType="MM" minimumSize="0">
+      <fontProperties style="" description="MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0"/>
+      <attribute label="" color="#000000" field=""/>
     </DiagramCategory>
   </SingleCategoryDiagramRenderer>
-  <DiagramLayerSettings showAll="1" obstacle="0" placement="2" priority="0" zIndex="0" linePlacementFlags="2" dist="0">
+  <DiagramLayerSettings placement="2" priority="0" linePlacementFlags="2" obstacle="0" zIndex="0" showAll="1" dist="0">
     <properties>
       <Option type="Map">
-        <Option type="QString" name="name" value=""/>
+        <Option type="QString" value="" name="name"/>
         <Option name="properties"/>
-        <Option type="QString" name="type" value="collection"/>
+        <Option type="QString" value="collection" name="type"/>
       </Option>
     </properties>
   </DiagramLayerSettings>
+  <geometryOptions geometryPrecision="0" removeDuplicateNodes="0">
+    <activeChecks/>
+    <checkConfiguration/>
+  </geometryOptions>
   <fieldConfiguration>
-    <field name="ID">
-      <editWidget type="TextEdit">
-        <config>
-          <Option type="Map">
-            <Option type="bool" name="IsMultiline" value="false"/>
-            <Option type="bool" name="UseHtml" value="false"/>
-          </Option>
-        </config>
-      </editWidget>
-    </field>
-    <field name="NodeFrom">
-      <editWidget type="TextEdit">
-        <config>
-          <Option type="Map">
-            <Option type="bool" name="IsMultiline" value="false"/>
-            <Option type="bool" name="UseHtml" value="false"/>
-          </Option>
-        </config>
-      </editWidget>
-    </field>
-    <field name="NodeTo">
-      <editWidget type="TextEdit">
-        <config>
-          <Option type="Map">
-            <Option type="bool" name="IsMultiline" value="false"/>
-            <Option type="bool" name="UseHtml" value="false"/>
-          </Option>
-        </config>
-      </editWidget>
-    </field>
-    <field name="Status">
+    <field name="id">
       <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field name="Length">
+    <field name="nodefrom">
       <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field name="Diameter">
+    <field name="nodeto">
       <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field name="Roughness">
+    <field name="status">
       <editWidget type="TextEdit">
         <config>
           <Option/>
         </config>
       </editWidget>
     </field>
-    <field name="MinorLoss">
+    <field name="length">
+      <editWidget type="TextEdit">
+        <config>
+          <Option/>
+        </config>
+      </editWidget>
+    </field>
+    <field name="diameter">
+      <editWidget type="TextEdit">
+        <config>
+          <Option/>
+        </config>
+      </editWidget>
+    </field>
+    <field name="roughness">
+      <editWidget type="TextEdit">
+        <config>
+          <Option/>
+        </config>
+      </editWidget>
+    </field>
+    <field name="minorloss">
+      <editWidget type="TextEdit">
+        <config>
+          <Option/>
+        </config>
+      </editWidget>
+    </field>
+    <field name="desc">
       <editWidget type="TextEdit">
         <config>
           <Option/>
@@ -192,64 +180,75 @@
     </field>
   </fieldConfiguration>
   <aliases>
-    <alias field="ID" index="0" name=""/>
-    <alias field="NodeFrom" index="1" name=""/>
-    <alias field="NodeTo" index="2" name=""/>
-    <alias field="Status" index="3" name=""/>
-    <alias field="Length" index="4" name=""/>
-    <alias field="Diameter" index="5" name=""/>
-    <alias field="Roughness" index="6" name=""/>
-    <alias field="MinorLoss" index="7" name=""/>
+    <alias index="0" field="id" name=""/>
+    <alias index="1" field="nodefrom" name=""/>
+    <alias index="2" field="nodeto" name=""/>
+    <alias index="3" field="status" name=""/>
+    <alias index="4" field="length" name=""/>
+    <alias index="5" field="diameter" name=""/>
+    <alias index="6" field="roughness" name=""/>
+    <alias index="7" field="minorloss" name=""/>
+    <alias index="8" field="desc" name=""/>
   </aliases>
   <excludeAttributesWMS/>
   <excludeAttributesWFS/>
   <defaults>
-    <default field="ID" expression="" applyOnUpdate="0"/>
-    <default field="NodeFrom" expression="" applyOnUpdate="0"/>
-    <default field="NodeTo" expression="" applyOnUpdate="0"/>
-    <default field="Status" expression="'OPEN'" applyOnUpdate="0"/>
-    <default field="Length" expression="1000" applyOnUpdate="0"/>
-    <default field="Diameter" expression="12" applyOnUpdate="0"/>
-    <default field="Roughness" expression="100" applyOnUpdate="0"/>
-    <default field="MinorLoss" expression="0" applyOnUpdate="0"/>
+    <default expression="" field="id" applyOnUpdate="0"/>
+    <default expression="" field="nodefrom" applyOnUpdate="0"/>
+    <default expression="" field="nodeto" applyOnUpdate="0"/>
+    <default expression="'OPEN'" field="status" applyOnUpdate="0"/>
+    <default expression="1000" field="length" applyOnUpdate="0"/>
+    <default expression="12" field="diameter" applyOnUpdate="0"/>
+    <default expression="100" field="roughness" applyOnUpdate="0"/>
+    <default expression="0" field="minorloss" applyOnUpdate="0"/>
+    <default expression="" field="desc" applyOnUpdate="0"/>
   </defaults>
   <constraints>
-    <constraint constraints="1" field="ID" notnull_strength="2" exp_strength="0" unique_strength="0"/>
-    <constraint constraints="1" field="NodeFrom" notnull_strength="2" exp_strength="0" unique_strength="0"/>
-    <constraint constraints="1" field="NodeTo" notnull_strength="2" exp_strength="0" unique_strength="0"/>
-    <constraint constraints="0" field="Status" notnull_strength="0" exp_strength="0" unique_strength="0"/>
-    <constraint constraints="0" field="Length" notnull_strength="0" exp_strength="0" unique_strength="0"/>
-    <constraint constraints="0" field="Diameter" notnull_strength="0" exp_strength="0" unique_strength="0"/>
-    <constraint constraints="0" field="Roughness" notnull_strength="0" exp_strength="0" unique_strength="0"/>
-    <constraint constraints="0" field="MinorLoss" notnull_strength="0" exp_strength="0" unique_strength="0"/>
+    <constraint unique_strength="0" exp_strength="0" constraints="1" field="id" notnull_strength="2"/>
+    <constraint unique_strength="0" exp_strength="0" constraints="1" field="nodefrom" notnull_strength="2"/>
+    <constraint unique_strength="0" exp_strength="0" constraints="1" field="nodeto" notnull_strength="2"/>
+    <constraint unique_strength="0" exp_strength="0" constraints="0" field="status" notnull_strength="0"/>
+    <constraint unique_strength="0" exp_strength="0" constraints="0" field="length" notnull_strength="0"/>
+    <constraint unique_strength="0" exp_strength="0" constraints="0" field="diameter" notnull_strength="0"/>
+    <constraint unique_strength="0" exp_strength="0" constraints="0" field="roughness" notnull_strength="0"/>
+    <constraint unique_strength="0" exp_strength="0" constraints="0" field="minorloss" notnull_strength="0"/>
+    <constraint unique_strength="0" exp_strength="0" constraints="0" field="desc" notnull_strength="0"/>
   </constraints>
   <constraintExpressions>
-    <constraint exp="" desc="" field="ID"/>
-    <constraint exp="" desc="" field="NodeFrom"/>
-    <constraint exp="" desc="" field="NodeTo"/>
-    <constraint exp="" desc="" field="Status"/>
-    <constraint exp="" desc="" field="Length"/>
-    <constraint exp="" desc="" field="Diameter"/>
-    <constraint exp="" desc="" field="Roughness"/>
-    <constraint exp="" desc="" field="MinorLoss"/>
+    <constraint exp="" desc="" field="id"/>
+    <constraint exp="" desc="" field="nodefrom"/>
+    <constraint exp="" desc="" field="nodeto"/>
+    <constraint exp="" desc="" field="status"/>
+    <constraint exp="" desc="" field="length"/>
+    <constraint exp="" desc="" field="diameter"/>
+    <constraint exp="" desc="" field="roughness"/>
+    <constraint exp="" desc="" field="minorloss"/>
+    <constraint exp="" desc="" field="desc"/>
   </constraintExpressions>
+  <expressionfields/>
   <attributeactions>
-    <defaultAction key="Canvas" value="{00000000-0000-0000-0000-000000000000}"/>
+    <defaultAction value="{00000000-0000-0000-0000-000000000000}" key="Canvas"/>
   </attributeactions>
-  <attributetableconfig sortOrder="0" sortExpression="" actionWidgetStyle="dropDown">
+  <attributetableconfig sortExpression="" actionWidgetStyle="dropDown" sortOrder="0">
     <columns>
-      <column type="field" hidden="0" name="ID" width="-1"/>
-      <column type="field" hidden="0" name="NodeFrom" width="-1"/>
-      <column type="field" hidden="0" name="NodeTo" width="-1"/>
-      <column type="field" hidden="0" name="Status" width="-1"/>
-      <column type="field" hidden="0" name="Length" width="-1"/>
-      <column type="field" hidden="0" name="Diameter" width="-1"/>
-      <column type="field" hidden="0" name="Roughness" width="-1"/>
-      <column type="field" hidden="0" name="MinorLoss" width="-1"/>
-      <column type="actions" hidden="1" width="-1"/>
+      <column type="actions" width="-1" hidden="1"/>
+      <column type="field" width="-1" name="id" hidden="0"/>
+      <column type="field" width="-1" name="nodefrom" hidden="0"/>
+      <column type="field" width="-1" name="nodeto" hidden="0"/>
+      <column type="field" width="-1" name="status" hidden="0"/>
+      <column type="field" width="-1" name="length" hidden="0"/>
+      <column type="field" width="-1" name="diameter" hidden="0"/>
+      <column type="field" width="-1" name="roughness" hidden="0"/>
+      <column type="field" width="-1" name="minorloss" hidden="0"/>
+      <column type="field" width="-1" name="desc" hidden="0"/>
     </columns>
   </attributetableconfig>
-  <editform>.</editform>
+  <conditionalstyles>
+    <rowstyles/>
+    <fieldstyles/>
+  </conditionalstyles>
+  <storedexpressions/>
+  <editform tolerant="1">.</editform>
   <editforminit/>
   <editforminitcodesource>0</editforminitcodesource>
   <editforminitfilepath></editforminitfilepath>
@@ -273,16 +272,27 @@ def my_form_open(dialog, layer, feature):
   <featformsuppress>0</featformsuppress>
   <editorlayout>generatedlayout</editorlayout>
   <editable>
-    <field name="Diameter" editable="1"/>
-    <field name="ID" editable="1"/>
-    <field name="Length" editable="1"/>
-    <field name="MinorLoss" editable="1"/>
-    <field name="NodeFrom" editable="1"/>
-    <field name="NodeTo" editable="1"/>
-    <field name="Roughness" editable="1"/>
-    <field name="Status" editable="1"/>
+    <field editable="1" name="Desc"/>
+    <field editable="1" name="Diameter"/>
+    <field editable="1" name="ID"/>
+    <field editable="1" name="Length"/>
+    <field editable="1" name="MinorLoss"/>
+    <field editable="1" name="NodeFrom"/>
+    <field editable="1" name="NodeTo"/>
+    <field editable="1" name="Roughness"/>
+    <field editable="1" name="Status"/>
+    <field editable="1" name="desc"/>
+    <field editable="1" name="diameter"/>
+    <field editable="1" name="id"/>
+    <field editable="1" name="length"/>
+    <field editable="1" name="minorloss"/>
+    <field editable="1" name="nodefrom"/>
+    <field editable="1" name="nodeto"/>
+    <field editable="1" name="roughness"/>
+    <field editable="1" name="status"/>
   </editable>
   <labelOnTop>
+    <field labelOnTop="0" name="Desc"/>
     <field labelOnTop="0" name="Diameter"/>
     <field labelOnTop="0" name="ID"/>
     <field labelOnTop="0" name="Length"/>
@@ -291,13 +301,17 @@ def my_form_open(dialog, layer, feature):
     <field labelOnTop="0" name="NodeTo"/>
     <field labelOnTop="0" name="Roughness"/>
     <field labelOnTop="0" name="Status"/>
+    <field labelOnTop="0" name="desc"/>
+    <field labelOnTop="0" name="diameter"/>
+    <field labelOnTop="0" name="id"/>
+    <field labelOnTop="0" name="length"/>
+    <field labelOnTop="0" name="minorloss"/>
+    <field labelOnTop="0" name="nodefrom"/>
+    <field labelOnTop="0" name="nodeto"/>
+    <field labelOnTop="0" name="roughness"/>
+    <field labelOnTop="0" name="status"/>
   </labelOnTop>
   <widgets/>
-  <conditionalstyles>
-    <rowstyles/>
-    <fieldstyles/>
-  </conditionalstyles>
-  <expressionfields/>
   <previewExpression>COALESCE("DC_ID", '&lt;NULL>')</previewExpression>
   <mapTip>DC_ID</mapTip>
   <layerGeometryType>1</layerGeometryType>
