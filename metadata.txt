@@ -21,7 +21,9 @@ about=This tool can be used to IMPORT EPANET INP File to shapefiles and adds the
 # Optional items:
 
 # Uncomment the following line and add your changelog:
-changelog=2020-08-02 ImportEpanetInpFiles 1.6.1:
+changelog=2020-11-06 ImportEpanetInpFiles 1.6.2:
+			Fixed issue with export vertices
+		2020-08-02 ImportEpanetInpFiles 1.6.1:
 			Fixed issue with demand categories (Thanks to @Jannik-Schilling)
         2019-08-07  ImportEpanetInpFiles 1.6:
 			Fix bug in descriptions field
