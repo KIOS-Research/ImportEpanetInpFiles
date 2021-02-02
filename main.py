@@ -1,5 +1,6 @@
 # (C)Marios Kyriakou 2016
 # University of Cyprus, KIOS Research Center for Intelligent Systems and Networks
+# Last Update: 2021-02-02
 from qgis.PyQt.QtWidgets import (QAction, QFileDialog, QMessageBox, QWidget, QWizard, QWizardPage, QVBoxLayout)
 from qgis.PyQt.QtGui import *  # QIcon
 from qgis.PyQt.QtCore import *  # QVariant, Qt
@@ -9,10 +10,6 @@ from .Epa2GIS import epa2gis
 from . import resources_rc
 import sys
 import os
-try:
-    import pyproj
-except:
-    pass
 from qgis.PyQt import QtGui, uic, QtCore
 from qgis.PyQt.QtWidgets import QDialog
 
@@ -291,9 +288,9 @@ class ImpEpanet(object):
                     eval(f'sect{sect}.append(dict(zip(field_names, elem.attributes())))')
                     if any(sect in s for s in self.sections[0:5]):
                         geom = elem.geometry()
-
+                        geom.transform(xform)
                         if self.layers[indLayerName].geometryType() == 0:
-                            geom_points = xform.transform(geom.asPoint())
+                            geom_points = geom.asPoint()
                             eval('xy' + sect + '.append(geom_points)')
                         elif self.layers[indLayerName].geometryType() == 1:
                             geom_polyline = []
@@ -316,11 +313,6 @@ class ImpEpanet(object):
                                         xypipes_id.append(elem.attributes()[elem.fieldNameIndex('id')])
                                         x = value[0]
                                         y = value[1]
-                                        try:
-                                            proj = pyproj.Transformer.from_crs(crsSrc.authid(), crsDest.authid(), True)
-                                            x, y = proj.transform(x, y)
-                                        except:
-                                            pass
                                         xypipesvert.append([x, y])
 
                     if sect == 'junctions':
@@ -721,7 +713,6 @@ class ImpEpanet(object):
 
         f.write('\n[VERTICES]\n')
         f.write(';Vertices\n')
-
         for i, id in enumerate(xypipes_id):
             f.write(str(id) + '   ' + str(xypipesvert[i][0]) + '   ' + str(xypipesvert[i][1]) + '\n')
         f.write('\n[END]\n')
