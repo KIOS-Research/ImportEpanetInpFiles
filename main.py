@@ -9,7 +9,10 @@ from .Epa2GIS import epa2gis
 from . import resources_rc
 import sys
 import os
-
+try:
+    import pyproj
+except:
+    pass
 from qgis.PyQt import QtGui, uic, QtCore
 from qgis.PyQt.QtWidgets import QDialog
 
@@ -288,6 +291,7 @@ class ImpEpanet(object):
                     eval(f'sect{sect}.append(dict(zip(field_names, elem.attributes())))')
                     if any(sect in s for s in self.sections[0:5]):
                         geom = elem.geometry()
+
                         if self.layers[indLayerName].geometryType() == 0:
                             geom_points = xform.transform(geom.asPoint())
                             eval('xy' + sect + '.append(geom_points)')
@@ -307,10 +311,18 @@ class ImpEpanet(object):
 
                             eval(f'xy{sect}.append(geom_polyline)')
                             if sect == 'pipes':
-                                if len(gg) > 2:
-                                    for value in gg:
+                                if len(pnt_lines[0]) > 2:
+                                    for value in pnt_lines[0]:
                                         xypipes_id.append(elem.attributes()[elem.fieldNameIndex('id')])
-                                        xypipesvert.append(value)
+                                        x = value[0]
+                                        y = value[1]
+                                        try:
+                                            proj = pyproj.Transformer.from_crs(crsSrc.authid(), crsDest.authid(), True)
+                                            x, y = proj.transform(x, y)
+                                        except:
+                                            pass
+                                        xypipesvert.append([x, y])
+
                     if sect == 'junctions':
                         if 'elevation' not in locals()[f'sect{sect}'][0].keys():
                             QMessageBox.warning(QWidget(), "Message", "Elevation field is missing.")
@@ -318,7 +330,7 @@ class ImpEpanet(object):
         my_directory = ''
         f = open(self.outEpanetName, 'wt')
         f.write('[TITLE]\n')
-        f.write('Export input file via plugin ExportEpanetInpFiles. \n\n')
+        f.write('Export input file via plugin ImportEpanetInpFiles. \n\n')
         f.write('[JUNCTIONS]\n')
         f.write(';ID              	Elev        	Demand      	Pattern \n')
         node_i_ds = []
