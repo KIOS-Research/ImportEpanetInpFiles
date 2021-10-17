@@ -59,9 +59,10 @@ changelog=2021-10-17 ImportEpanetInpFiles 1.6.3:
 # Tags are comma separated with spaces allowed
 tags=epanet,import,export,inp,network
 
-homepage=https://github.com/KIOS-Research/ImportEpanetInpFiles
+homepage=https://mariosmsk.com/2021/10/17/importepanetinpfiles-qgis/
 tracker=https://github.com/KIOS-Research/ImportEpanetInpFiles/issues
-repository=https://github.com/KIOS-Research/ImportEpanetInpFilescategory=Plugins
+repository=https://github.com/KIOS-Research/ImportEpanetInpFiles
+category=Plugins
 icon=icon.png# experimental flag
 experimental=False
 
