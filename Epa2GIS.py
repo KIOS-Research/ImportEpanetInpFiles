@@ -239,20 +239,26 @@ def epa2gis(inpname, epsg_crs):
                 ndIndexNew = ndCoordsID.index(ndID[i])
                 featJ = QgsFeature()
                 point = QgsPointXY(float(x[ndIndexNew]), float(y[ndIndexNew]))
-                featJ.initAttributes(3 + len(ndBaseTmp[0]) * 2)
                 featJ.setGeometry(QgsGeometry.fromPointXY(point))
-                featJ.setAttribute(0, ndID[i])
-                featJ.setAttribute(1, ndEle[i])
-                w = 2
-                for j in range(0, len(ndBaseTmp[0])):
-                    featJ.setAttribute(w, ndBaseTmp[i][j])
-                    featJ.setAttribute(w + 1, ndPatTmp[i][j])
-                    w = w + 2
-                    featJ.setAttribute(w, ndDes[i])
-                prJunction.addFeatures([featJ])
 
-            except:
+                # Remove support for multiple basedemands [temporary]
+                if ndBaseTmp:
+                    featJ.initAttributes(3 + len(ndBaseTmp[0]) * 2)
+                    featJ.setAttribute(0, ndID[i])
+                    featJ.setAttribute(1, ndEle[i])
+                    w = 2
+                    for j in range(0, len(ndBaseTmp[0])):
+                        featJ.setAttribute(w, ndBaseTmp[i][j])
+                        featJ.setAttribute(w + 1, ndPatTmp[i][j])
+                        w = w + 2
+                        featJ.setAttribute(w, ndDes[i])
+                else:
+                    featJ.setAttributes([ndID[i], ndEle[i], 0, '', ndDes[i]])
+
+                prJunction.addFeatures([featJ])
+            except Exception as e:
                 pass
+
         if i < nlinkCount:
             if len(stat) == i:
                 ch = 1
