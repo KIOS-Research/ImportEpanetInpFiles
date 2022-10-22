@@ -358,13 +358,13 @@ class ImpEpanet(object):
         for i in range(0, len(locals()['sectpipes'])):
             if (locals()['sectpipes'][i]['nodefrom'] in node_i_ds) and (
                     locals()['sectpipes'][i]['nodeto'] in node_i_ds):
-                f.write(locals()['sectpipes'][i]['id'] + '   ' + locals()['sectpipes'][i]['nodefrom']
-                           + '   ' + locals()['sectpipes'][i]['nodeto'] + '   ' + str(
+                f.write(str(locals()['sectpipes'][i]['id']) + '   ' + str(locals()['sectpipes'][i]['nodefrom'])
+                           + '   ' + str(locals()['sectpipes'][i]['nodeto']) + '   ' + str(
                     locals()['sectpipes'][i]['length']) + '   ' + str(
                     locals()['sectpipes'][i]['diameter'])
                            + '   ' + str(locals()['sectpipes'][i]['roughness']) + '   ' + str(
-                    locals()['sectpipes'][i]['minorloss']) + '   ' +
-                           locals()['sectpipes'][i]['status'] + '   ;' + str(locals()['sectpipes'][i]['desc']) + '\n')
+                    locals()['sectpipes'][i]['minorloss']) + '   ' +str(
+                           locals()['sectpipes'][i]['status']) + '   ;' + str(locals()['sectpipes'][i]['desc']) + '\n')
         f.write('\n[PUMPS]\n')
         f.write(';ID              	Node1           	Node2           	Parameters\n')
         for i in range(len(locals()['sectpumps'])):
