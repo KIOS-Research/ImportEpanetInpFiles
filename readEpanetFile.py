@@ -713,10 +713,18 @@ def getBinInfo():
                     pass
                 else:
                     nodeJunctionNameID.append(mm[0])
-                    nodeJunctionElevations.append(float(mm[1]))
+                    try:
+                        nodeJunctionElevations.append(float(mm[1]))
+                    except:
+                        nodeJunctionElevations.append(0)
+
                     if len(mm) > 2:
                         if ';' not in mm[2]:
-                            nodeJunctionBaseDemands.append(float(mm[2]))
+                            try:
+                                nodeJunctionBaseDemands.append(float(mm[2]))
+                            except:
+                                nodeJunctionBaseDemands.append(0)
+
                     if len(mm) > 3:
                         if mm[3][0] != ';':
                              nodePatternNameID.append(mm[3])
@@ -737,7 +745,10 @@ def getBinInfo():
                     pass
                 else:
                     nodeReservoirNameID.append(mm[0])
-                    nodeReservoirElevations.append(float(mm[1]))
+                    try:
+                        nodeReservoirElevations.append(float(mm[1]))
+                    except:
+                        nodeReservoirElevations.append(0)
 
                     if len(mm) > 2:
                         if mm[2][0] != ';':
@@ -759,12 +770,30 @@ def getBinInfo():
                     pass
                 else:
                     BinNodeTankNameID.append(mm[0])
-                    BinNodeTankElevation.append(float(mm[1]))
-                    BinNodeTankInitLevel.append(float(mm[2]))
-                    BinNodeTankMinLevel.append(float(mm[3]))
-                    BinNodeTankMaxLevel.append(float(mm[4]))
-                    BinNodeTankDiameter.append(float(mm[5]))
-                    BinNodeTankMinVol.append(float(mm[6]))
+                    try:
+                        BinNodeTankElevation.append(float(mm[1]))
+                    except:
+                        BinNodeTankElevation.append(0)
+                    try:
+                        BinNodeTankInitLevel.append(float(mm[2]))
+                    except:
+                        BinNodeTankInitLevel.append(0)
+                    try:
+                        BinNodeTankMinLevel.append(float(mm[3]))
+                    except:
+                        BinNodeTankMinLevel.append(0)
+                    try:
+                        BinNodeTankMaxLevel.append(float(mm[4]))
+                    except:
+                        BinNodeTankMaxLevel.append(0)
+                    try:
+                        BinNodeTankDiameter.append(float(mm[5]))
+                    except:
+                        BinNodeTankDiameter.append(0)
+                    try:
+                        BinNodeTankMinVol.append(float(mm[6]))
+                    except:
+                        BinNodeTankMinVol.append(0)
                     nodePatternNameID.append('')
 
                     if len(mm) > 7:
@@ -790,11 +819,23 @@ def getBinInfo():
                     BinLinkPipeNameID.append(mm[0])
                     BinLinkFromNode.append(mm[1])
                     BinLinkToNode.append(mm[2])
-                    BinLinkPipeLengths.append(float(mm[3]))
-                    BinLinkPipeDiameters.append(float(mm[4]))
-                    BinLinkPipeRoughness.append(float(mm[5]))
+                    try:
+                        BinLinkPipeLengths.append(float(mm[3]))
+                    except:
+                        BinLinkPipeLengths.append(0)
+                    try:
+                        BinLinkPipeDiameters.append(float(mm[4]))
+                    except:
+                        BinLinkPipeDiameters.append(0)
+                    try:
+                        BinLinkPipeRoughness.append(float(mm[5]))
+                    except:
+                        BinLinkPipeRoughness.append(0)
                     if len(mm) > 6:
-                        BinLinkPipeMinorLoss.append(float(mm[6]))
+                        try:
+                            BinLinkPipeMinorLoss.append(float(mm[6]))
+                        except:
+                            BinLinkPipeMinorLoss.append(0)
                     else:
                         BinLinkPipeMinorLoss.append('')
 
