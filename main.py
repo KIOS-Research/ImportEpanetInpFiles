@@ -437,7 +437,6 @@ class ImpEpanet(object):
                 ppat = 'pattern'+str(u)
                 ddem = 'demand'+str(u)
                 if (ppat in locals()['sectjunctions'][i]) and (ddem in locals()['sectjunctions'][i]):
-                    print(locals()['sectjunctions'][i][ddem])
                     if locals()['sectjunctions'][i][ddem] == 0 and str(locals()['sectjunctions'][i][ppat]) == 'None':
                         continue
                     if str(locals()['sectjunctions'][i][ppat]) == 'NULL' or str(
