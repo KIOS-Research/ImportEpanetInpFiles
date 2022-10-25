@@ -434,15 +434,18 @@ class ImpEpanet(object):
         for i in range(len(locals()['sectjunctions'])):
             u = 1
             while True:
-                if ('Pattern'+str(u) in locals()['sectjunctions'][i]) and ('Demand'+str(u) in locals()['sectjunctions'][i]):
-                    if locals()['sectjunctions'][i]['Demand' + str(u)] == 0 and str(
-                            locals()['sectjunctions'][i]['Pattern' + str(u)]) == 'None':
+                ppat = 'pattern'+str(u)
+                ddem = 'demand'+str(u)
+                if (ppat in locals()['sectjunctions'][i]) and (ddem in locals()['sectjunctions'][i]):
+                    print(locals()['sectjunctions'][i][ddem])
+                    if locals()['sectjunctions'][i][ddem] == 0 and str(locals()['sectjunctions'][i][ppat]) == 'None':
                         continue
-                    if str(locals()['sectjunctions'][i]['Pattern' + str(u)]) == 'NULL' or str(
-                            locals()['sectjunctions'][i]['Pattern' + str(u)]) == 'None':
-                        locals()['sectjunctions'][i]['Pattern' + str(u)] = ''
-                    f.write(locals()['sectjunctions'][i]['ID'] + '   ' + str(locals()['sectjunctions'][i]['Demand' + str(u)])
-                            + '   ' + str(locals()['sectjunctions'][i]['Pattern' + str(u)]) + '\n')
+                    if str(locals()['sectjunctions'][i][ppat]) == 'NULL' or str(
+                            locals()['sectjunctions'][i][ppat]) == 'None':
+                        locals()['sectjunctions'][i][ppat] = ''
+
+                    f.write(locals()['sectjunctions'][i]['id'] + '   ' + str(locals()['sectjunctions'][i][ddem])
+                            + '   ' + str(locals()['sectjunctions'][i][ppat]) + '\n')
                     u += 1
                 else:
                     break
@@ -468,8 +471,8 @@ class ImpEpanet(object):
         f.write(';ID              	X-Value     	Y-Value\n')
         for i in range(len(locals()['sectcurves'])):
             try:
-                f.write(";{}:\n   {}   {}   {}\n".format(locals()['sectcurves'][i]['desc'],
-                                                            locals()['sectcurves'][i]['curve_ID'],
+                f.write(";{}:\n   {}   {}   {}\n".format(locals()['sectcurves'][i]['type'],
+                                                            locals()['sectcurves'][i]['curve_id'],
                                                             str(locals()['sectcurves'][i]['x-value']),
                                                             str(locals()['sectcurves'][i]['y-value'])))
             except:
